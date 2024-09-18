@@ -1,20 +1,19 @@
 package org.example;
 
-import com.sun.net.httpserver.HttpServer;
-import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
-
-import java.net.URI;
-
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        final String pack = "dev.kek.rest.ressource";
-        String url = "http://localhost:8069/rest";
-        System.out.println("Start server"); System.out.println(url);
-        final ResourceConfig rc = new ResourceConfig().packages(pack);
-        final HttpServer server = JdkHttpServerFactory.createHttpServer( URI.create(url), rc);
-        System.out.println("Ready for Requests....");
+        // Press Alt+Eingabe with your caret at the highlighted text to see how
+        // IntelliJ IDEA suggests fixing it.
+        System.out.printf("Hello and welcome!");
+
+        // Press Umschalt+F10 or click the green arrow button in the gutter to run the code.
+        for (int i = 1; i <= 5; i++) {
+
+            // Press Umschalt+F9 to start debugging your code. We have set one breakpoint
+            // for you, but you can always add more by pressing Strg+F8.
+            System.out.println("i = " + i);
+        }
     }
 }
