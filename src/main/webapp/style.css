@@ -1,0 +1,75 @@
+body {
+
+}
+
+background {
+    position: absolute;
+    left: 0%;
+    width: 100%;
+    top: 0%;
+    height : 100%;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 390px;
+    box-shadow: 0px 0px 50px 1px grey;
+    padding: 10px;
+    border-radius: 16px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    vertical-align: middle;
+}
+
+.center input {
+    border-bottom: solid 2px grey;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+    .center input:focus {
+        outline: none;
+    }
+
+    .center h1 {
+        font-family: 'Bradley Hand ITC';
+        font-size: 48px;
+        margin-top: 32px;
+    }
+
+    .center button {
+        font-size: 24px;
+        border-radius: 20px;
+        margin-top: 96px;
+        width: 256px;
+        height: 48px;
+        margin-bottom: 32px;
+        border: none;
+        background: linear-gradient(45deg, pink, lightblue);
+        cursor: pointer;
+    }
+
+    .center button:hover {
+        outline: solid 1px black;
+    }
+
+    .center span {
+        font-family: Candara;
+        font-size: 18px;
+        margin-bottom: 32px;
+    }
+
+    .center a {
+        text-decoration: solid;
+        text-decoration-line: underline;
+    }
