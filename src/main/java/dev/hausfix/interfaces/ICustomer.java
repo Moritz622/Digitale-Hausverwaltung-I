@@ -13,5 +13,6 @@ public interface ICustomer {
     String getFirstName();
     String getLastName();
     LocalDate getBirthDate();
+    EGender getGender();
 
 }

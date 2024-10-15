@@ -17,31 +17,26 @@ public class CustomerRessource extends Ressource {
     public Customer getCustomer() {
         String query = "SELECT lastname,firstname,email,password,dateofbirth,genderid FROM customers WHERE id = 1"; // Beispielhafte SQL-Abfrage
 
-        System.out.println("20");
-
         Customer customer = new Customer();
-
-
+/*
         try(Connection connection = DatabaseConnection.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(query);
-
-            System.out.println("hi");
 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                customer.setName(rs.getString("firstname"));
-                customer.setSurname(rs.getString("lastname"));
-                customer.setEmail(rs.getString("email"));
-                customer.setPassword(rs.getString("password"));
-                customer.setDateOfBirth(rs.getDate("dateofbirth"));
-                customer.setGenderID(Integer.parseInt(rs.getString("genderid")));
+                //customer.setName(rs.getString("firstname"));
+                //customer.setSurname(rs.getString("lastname"));
+                //customer.setEmail(rs.getString("email"));
+                //customer.setPassword(rs.getString("password"));
+                //customer.setDateOfBirth(rs.getDate("dateofbirth"));
+                //customer.setGenderID(Integer.parseInt(rs.getString("genderid")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-
-        return customer; // Jersey will automatically convert this to XML
+*/
+        return null; // Jersey will automatically convert this to XML
     }
 }

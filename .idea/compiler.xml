@@ -6,11 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Digitale-Hausverwaltung-I" />
         <module name="REST_API" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Digitale-Hausverwaltung-I" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

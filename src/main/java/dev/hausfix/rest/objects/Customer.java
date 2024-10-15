@@ -1,63 +1,58 @@
 package dev.hausfix.rest.objects;
 
+import dev.hausfix.enumerators.EGender;
+import dev.hausfix.interfaces.ICustomer;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @XmlRootElement
-public class Customer {
-    private String name;
-    private String surname;
-    private Date dateOfBirth;
-    private int genderID;
+public class Customer implements ICustomer {
+
+    private String firstName;
+    private String lastName;
+    private LocalDate birthDate;
+    private EGender gender;
     private String email;
     private String password;
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    @Override
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    @Override
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setGenderID(int genderID) {
-        this.genderID = genderID;
+    @Override
+    public void setGender(EGender gender) {
+        this.gender = gender;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public int getGenderID() {
-        return genderID;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
+    @Override
+    public EGender getGender() {
+        return gender;
     }
 }
