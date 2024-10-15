@@ -1,4 +1,4 @@
-package org.example;
+package dev.hausfix.interfaces;
 
 import java.util.Properties;
 

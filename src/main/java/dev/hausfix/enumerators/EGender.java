@@ -1,4 +1,4 @@
-package org.example;
+package dev.hausfix.enumerators;
 
 public enum EGender {
     D,      //Divers

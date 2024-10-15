@@ -1,4 +1,6 @@
-package org.example;
+package dev.hausfix.interfaces;
+
+import dev.hausfix.enumerators.EGender;
 
 import java.time.LocalDate;
 

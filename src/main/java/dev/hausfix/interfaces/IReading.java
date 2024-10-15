@@ -1,13 +1,15 @@
-package org.example;
+package dev.hausfix.interfaces;
 
 import java.time.LocalDate;
+
+import dev.hausfix.enumerators.EKindOfMeter;
 
 public interface IReading {
     // Setter methods
     void setComment (String comment);
     void setCustomer(ICustomer customer);
     void setDateOfReading(LocalDate dateOfReading);
-    void setKindOfMeter(KindOfMeter kindOfMeter);
+    void setKindOfMeter(EKindOfMeter kindOfMeter);
     void setMeterCount(double meterCount);
     void setMeterId(String meterId);
     void setSubstitute(boolean substitute);
@@ -16,7 +18,7 @@ public interface IReading {
     String getComment();
     ICustomer getCustomer();
     LocalDate getDateOfReading();
-    KindOfMeter getKindOfMeter();
+    EKindOfMeter getKindOfMeter();
     double getMeterCount();
     String getMeterId();
     boolean getSubstitute();
