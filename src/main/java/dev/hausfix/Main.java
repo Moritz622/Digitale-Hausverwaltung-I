@@ -1,15 +1,20 @@
 package dev.hausfix;
 
 import com.sun.net.httpserver.HttpServer;
+import dev.hausfix.entities.Customer;
+import dev.hausfix.enumerators.EGender;
+import dev.hausfix.services.CustomerService;
 import dev.hausfix.sql.DatabaseConnection;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.mariadb.jdbc.plugin.codec.LocalDateCodec;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Properties;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -30,6 +35,16 @@ public class Main {
             DatabaseConnection connection = (DatabaseConnection) new DatabaseConnection().openConnection(properties);
             connection.removeAllTables();
             connection.createAllTables();
+
+            CustomerService customerService = new CustomerService(connection);
+
+            Customer customer = new Customer();
+            customer.setFirstName("Nina");
+            customer.setLastName("Markart");
+            customer.setGender(EGender.W);
+            LocalDate test = new LocalDate(2005, 7, 20);
+            customer.setBirthDate(test);
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
