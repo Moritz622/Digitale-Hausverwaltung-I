@@ -38,7 +38,7 @@ public class DatabaseConnection implements IDatabaseConnection {
         @Override
         public void createAllTables() {
                 try {
-                        connection.prepareStatement("CREATE TABLE customers (id INT AUTO_INCREMENT PRIMARY KEY,lastname VARCHAR(100),firstname VARCHAR(100),email VARCHAR(100),password VARCHAR(100),birthdate DATE,gender ENUM ('D','M','U','W'));").executeQuery();
+                        connection.prepareStatement("CREATE TABLE customers (id UUID PRIMARY KEY,lastname VARCHAR(100),firstname VARCHAR(100),email VARCHAR(100),password VARCHAR(100),birthdate DATE,gender ENUM ('D','M','U','W'));").executeQuery();
                         connection.prepareStatement("CREATE TABLE readings(id INT AUTO_INCREMENT PRIMARY KEY,comment VARCHAR(9999),customerid INT,dateofreading DATE,kindofmeterid INT,metercounter FLOAT,meterid INT,substitute BOOLEAN)").executeQuery();
                         connection.prepareStatement("CREATE TABLE gender(id INT AUTO_INCREMENT PRIMARY KEY, gender ENUM ('D','M','U','W'))").executeQuery();
                         connection.prepareStatement("CREATE TABLE kindOFMeter(id INT AUTO_INCREMENT PRIMARY KEY)").executeQuery();

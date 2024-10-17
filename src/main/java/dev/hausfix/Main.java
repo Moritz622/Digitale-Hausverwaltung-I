@@ -42,9 +42,12 @@ public class Main {
             customer.setFirstName("Nina");
             customer.setLastName("Markart");
             customer.setGender(EGender.W);
-            LocalDate test = new LocalDate(2005, 7, 20);
+            LocalDate test = LocalDate.now();
             customer.setBirthDate(test);
 
+            customerService.addCustomer(customer);
+
+            customerService.getAllCustomers();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

@@ -16,6 +16,10 @@ public class Customer extends Entity implements ICustomer {
     private EGender gender;
     private UUID id;
 
+    public Customer(){
+        id = UUID.randomUUID();
+    }
+
     @Override
     public UUID getId() {
         return id;
