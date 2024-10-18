@@ -2,8 +2,11 @@ package dev.hausfix;
 
 import com.sun.net.httpserver.HttpServer;
 import dev.hausfix.entities.Customer;
+import dev.hausfix.entities.Reading;
 import dev.hausfix.enumerators.EGender;
+import dev.hausfix.enumerators.EKindOfMeter;
 import dev.hausfix.services.CustomerService;
+import dev.hausfix.services.ReadingService;
 import dev.hausfix.sql.DatabaseConnection;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -37,17 +40,34 @@ public class Main {
             connection.createAllTables();
 
             CustomerService customerService = new CustomerService(connection);
+            ReadingService readingService = new ReadingService(connection);
 
-            Customer customer = new Customer();
-            customer.setFirstName("Nina");
-            customer.setLastName("Markart");
-            customer.setGender(EGender.W);
-            LocalDate test = LocalDate.now();
-            customer.setBirthDate(test);
+            customerService.setReadingService(readingService);
+            readingService.setCustomerService(customerService);
 
-            customerService.addCustomer(customer);
+            Customer nina = new Customer();
+            nina.setFirstName("Nina");
+            nina.setLastName("Markart");
+            nina.setGender(EGender.W);
+            nina.setBirthDate(LocalDate.now());
 
-            customerService.getAllCustomers();
+            //customerService.addCustomer(nina);
+
+
+            Reading reading = new Reading();
+
+            reading.setCustomer(nina);
+            reading.setSubstitute(true);
+            reading.setDateOfReading(LocalDate.now());
+            reading.setComment("Ninas Strom");
+            reading.setMeterId("28900");
+            reading.setMeterCount(999999999);
+            reading.setKindOfMeter(EKindOfMeter.Strom);
+            reading.setId(null);
+
+            readingService.addReading(reading);
+
+            //customerService.removeCustomer(nina);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

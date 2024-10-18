@@ -25,11 +25,21 @@ public class DatabaseConnection implements IDatabaseConnection {
                 String dbUrl = properties.getProperty("admin.db.url");
                 String dbUser = properties.getProperty("admin.db.user");
                 String dbPassword = properties.getProperty("admin.db.pw");
+                String dbName = properties.getProperty("admin.db.name");
 
                 try {
-                        connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+                        connection = DriverManager.getConnection(dbUrl + dbName, dbUser, dbPassword);
                 } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                    try {
+                        connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+
+                        Statement stmt = connection.createStatement();
+                        stmt.executeQuery("CREATE DATABASE hausfix");
+
+                        connection = DriverManager.getConnection(dbUrl + dbName, dbUser, dbPassword);
+                    } catch (SQLException ex) {
+                        System.out.println("Es konnte keine Verbingund zum SQL Server aufgebaut werden.");
+                    }
                 }
 
                 return this;
@@ -39,11 +49,11 @@ public class DatabaseConnection implements IDatabaseConnection {
         public void createAllTables() {
                 try {
                         connection.prepareStatement("CREATE TABLE customers (id UUID PRIMARY KEY,lastname VARCHAR(100),firstname VARCHAR(100),email VARCHAR(100),password VARCHAR(100),birthdate DATE,gender ENUM ('D','M','U','W'));").executeQuery();
-                        connection.prepareStatement("CREATE TABLE readings(id INT AUTO_INCREMENT PRIMARY KEY,comment VARCHAR(9999),customerid INT,dateofreading DATE,kindofmeterid INT,metercounter FLOAT,meterid INT,substitute BOOLEAN)").executeQuery();
+                        connection.prepareStatement("CREATE TABLE readings(id UUID PRIMARY KEY,comment VARCHAR(9999),customerId VARCHAR(256),dateOfReading DATE,kindOfMeter ENUM('Heizung','Strom','Wasser','Unbekannt'),meterCount DOUBLE,meterId VARCHAR(256),substitute BOOLEAN)").executeQuery();
                         connection.prepareStatement("CREATE TABLE gender(id INT AUTO_INCREMENT PRIMARY KEY, gender ENUM ('D','M','U','W'))").executeQuery();
                         connection.prepareStatement("CREATE TABLE kindOFMeter(id INT AUTO_INCREMENT PRIMARY KEY)").executeQuery();
                 } catch (SQLException e) {
-
+                        System.out.println("Fehler bei der erstellung der Tabellen");
                 }
         }
 
@@ -60,7 +70,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                         connection.prepareStatement("DROP TABLE gender").executeQuery();
                         connection.prepareStatement("DROP TABLE kindOFMeter").executeQuery();
                 } catch (SQLException e) {
-
+                        System.out.println("Fehler bei der löschung der Tabellen");
                 }
         }
 
@@ -69,7 +79,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                 try {
                         connection.close();
                 } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Verbindung zur Datenbank konnte nicht geschlossen werden.");
                 }
         }
 }
