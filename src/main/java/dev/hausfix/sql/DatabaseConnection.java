@@ -49,7 +49,14 @@ public class DatabaseConnection implements IDatabaseConnection {
 
         @Override
         public void truncateAllTables() {
+                try {
+                        connection.prepareStatement("TRUNCATE TABLE customers").executeQuery();
+                        connection.prepareStatement("TRUNCATE TABLE readings").executeQuery();
+                        connection.prepareStatement("TRUNCATE TABLE gender").executeQuery();
+                        connection.prepareStatement("TRUNCATE TABLE kindOFMeter").executeQuery();
+                } catch (SQLException e) {
 
+                }
         }
 
         @Override
