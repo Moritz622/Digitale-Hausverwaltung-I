@@ -1,6 +1,7 @@
 package dev.hausfix.interfaces;
 
 import dev.hausfix.entities.Reading;
+import dev.hausfix.exceptions.NoEntityFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +16,6 @@ public interface IReadingService {
 
     List<Reading> getAllReadings();
 
-    Reading getReading(UUID id);
+    Reading getReading(UUID id) throws NoEntityFoundException;
 
 }

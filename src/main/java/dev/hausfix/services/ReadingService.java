@@ -4,6 +4,7 @@ import dev.hausfix.entities.Customer;
 import dev.hausfix.entities.Reading;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.enumerators.EKindOfMeter;
+import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.interfaces.ICustomer;
 import dev.hausfix.interfaces.IReadingService;
 import dev.hausfix.sql.DatabaseConnection;
@@ -32,7 +33,9 @@ public class ReadingService extends Service implements IReadingService {
     @Override
     public void addReading(Reading reading) {
         try {
-            if(getReading(reading.getId()) != null){
+            try {
+                getReading(reading.getId());
+            } catch (NoEntityFoundException e) {
                 System.out.println("Es ist schon ein Reading mit der id " + reading.getId() + " vorhanden!");
                 return;
             }
@@ -68,7 +71,9 @@ public class ReadingService extends Service implements IReadingService {
             }else{
                 customer = ((Customer) reading.getCustomer()).getId().toString();
 
-                if(customerService.getCustomer(UUID.fromString(customer)) == null){
+                try {
+                    customerService.getCustomer(UUID.fromString(customer));
+                } catch (NoEntityFoundException e) {
                     if(!customerService.addCustomer((Customer) reading.getCustomer())){
                         System.out.println("Kunde zu Reading " + reading.getId() + " konnte nicht angelegt oder gefunden werden");
                         return;
@@ -159,7 +164,11 @@ public class ReadingService extends Service implements IReadingService {
 
                 reading.setId(UUID.fromString(resultsSet.getString("id")));
                 reading.setComment(resultsSet.getString("comment"));
-                reading.setCustomer(customerService.getCustomer(UUID.fromString(resultsSet.getString("customerId"))));
+                try {
+                    reading.setCustomer(customerService.getCustomer(UUID.fromString(resultsSet.getString("customerId"))));
+                } catch (NoEntityFoundException e) {
+                    reading.setCustomer(null);
+                }
                 reading.setDateOfReading(LocalDate.parse(resultsSet.getString("dateOfReading")));
                 reading.setKindOfMeter(EKindOfMeter.valueOf(resultsSet.getString("kindOfMeter")));
                 reading.setMeterCount(Double.parseDouble(resultsSet.getString("meterCount")));
@@ -183,7 +192,7 @@ public class ReadingService extends Service implements IReadingService {
     }
 
     @Override
-    public Reading getReading(UUID id){
+    public Reading getReading(UUID id) throws NoEntityFoundException {
         try {
             ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM readings WHERE id = '" + id.toString() + "'").executeQuery();
 
@@ -194,7 +203,11 @@ public class ReadingService extends Service implements IReadingService {
             if(resultsSet.getString("customerId").matches("null")){
                 reading.setCustomer(null);
             }else{
-                reading.setCustomer(customerService.getCustomer(UUID.fromString(resultsSet.getString("customerId"))));
+                try {
+                    reading.setCustomer(customerService.getCustomer(UUID.fromString(resultsSet.getString("customerId"))));
+                } catch (NoEntityFoundException e) {
+                    reading.setCustomer(null);
+                }
             }
 
             reading.setId(UUID.fromString(resultsSet.getString("id")));
@@ -215,7 +228,7 @@ public class ReadingService extends Service implements IReadingService {
         } catch (SQLException e) {
             System.out.println("Kein Reading mit der ID " + id + " gefunden");
 
-            return null;
+            throw new NoEntityFoundException("No Reading found with ID " + id);
         }
     }
 }
