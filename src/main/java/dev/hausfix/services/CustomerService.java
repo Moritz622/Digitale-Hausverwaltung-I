@@ -3,6 +3,7 @@ package dev.hausfix.services;
 import dev.hausfix.entities.Customer;
 import dev.hausfix.entities.Reading;
 import dev.hausfix.enumerators.EGender;
+import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.interfaces.ICustomerService;
 import dev.hausfix.sql.DatabaseConnection;
 
@@ -36,9 +37,11 @@ public class CustomerService extends Service implements ICustomerService {
                 return false;
             }
 
-            if(getCustomer(customer.getId()) != null){
+            try {
+                getCustomer(customer.getId());
                 System.out.println("Es ist schon ein Kunde mit der id " + customer.getId() + " vorhanden!");
-                return false;
+            } catch (NoEntityFoundException e) {
+                System.out.println("Kein Kunde mit der id " + customer.getId() + " vorhanden!");
             }
 
             String id = customer.getId().toString();
@@ -139,7 +142,7 @@ public class CustomerService extends Service implements ICustomerService {
     }
 
     @Override
-    public Customer getCustomer(UUID id){
+    public Customer getCustomer(UUID id) throws NoEntityFoundException {
         try {
             ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM customers WHERE id = '" + id + "'").executeQuery();
 
@@ -157,7 +160,7 @@ public class CustomerService extends Service implements ICustomerService {
         } catch (SQLException e) {
             System.out.println("Kein Kunde mit der ID " + id + " gefunden");
 
-            return null;
+            throw new NoEntityFoundException("No Entity found");
         }
     }
 }
