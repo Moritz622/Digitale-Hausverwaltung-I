@@ -22,6 +22,9 @@ public class Customer extends Entity implements ICustomer {
 
     @Override
     public UUID getId() {
+        if(id == null)
+            id = UUID.randomUUID();
+
         return id;
     }
 

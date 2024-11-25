@@ -1,5 +1,6 @@
 package dev.hausfix.entities;
 
+import dev.hausfix.enumerators.EGender;
 import dev.hausfix.enumerators.EKindOfMeter;
 import dev.hausfix.interfaces.ICustomer;
 import dev.hausfix.interfaces.IID;
@@ -19,8 +20,15 @@ public class Reading extends Entity implements IReading {
     private boolean substitute;
     private UUID id;
 
+    public Reading(){
+        id = UUID.randomUUID();
+    }
+
     @Override
     public UUID getId() {
+        if(id == null)
+            id = UUID.randomUUID();
+
         return id;
     }
 
