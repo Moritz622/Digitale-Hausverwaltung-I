@@ -28,7 +28,7 @@ public class CustomerRessource extends Ressource {
         Customer customer = new Customer();
         customer.setFirstName("Nina");
         customer.setLastName("Hit");
-        customer.setBirthDate(LocalDate.parse("11.9.2002"));
+        customer.setBirthDate(LocalDate.parse("2002-09-11"));
         customer.setGender(EGender.W);
 
         return Response.status(Response.Status.OK).entity(customer).build();

@@ -4,10 +4,12 @@ import com.sun.jna.platform.win32.WinUser;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.interfaces.ICustomer;
 import dev.hausfix.interfaces.IID;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+@XmlRootElement
 public class Customer extends Entity implements ICustomer {
 
     private String firstName;
