@@ -15,6 +15,7 @@
         <jersey.version>3.0.8</jersey.version>
         <jaxb.version>3.0.2</jaxb.version>
         <jackson.version>2.14.0</jackson.version>
+        <main.class>dev.hausfix.Main</main.class>
     </properties>
 
     <packaging>war</packaging>
@@ -28,6 +29,23 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>run-server</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>${main.class}</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>

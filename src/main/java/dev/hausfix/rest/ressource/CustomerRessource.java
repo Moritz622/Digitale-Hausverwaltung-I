@@ -1,42 +1,36 @@
 package dev.hausfix.rest.ressource;
 
+import dev.hausfix.entities.Customer;
+import dev.hausfix.enumerators.EGender;
+import dev.hausfix.services.CustomerService;
 import dev.hausfix.sql.DatabaseConnection;
+import dev.hausfix.util.PropertyLoader;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import dev.hausfix.rest.objects.Customer;
+import jakarta.ws.rs.core.Response;
 
-import java.sql.*;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Path("customer")
 public class CustomerRessource extends Ressource {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) // Specify XML response
-    public Customer getCustomer() {
-        String query = "SELECT lastname,firstname,email,password,dateofbirth,genderid FROM customers WHERE id = 1"; // Beispielhafte SQL-Abfrage
+    public Response getCustomer() {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        CustomerService customerService = new CustomerService(dbConnection);
 
         Customer customer = new Customer();
-/*
-        try(Connection connection = DatabaseConnection.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(query);
+        customer.setFirstName("Nina");
+        customer.setLastName("Hit");
+        customer.setBirthDate(LocalDate.parse("11.9.2002"));
+        customer.setGender(EGender.W);
 
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                //customer.setName(rs.getString("firstname"));
-                //customer.setSurname(rs.getString("lastname"));
-                //customer.setEmail(rs.getString("email"));
-                //customer.setPassword(rs.getString("password"));
-                //customer.setDateOfBirth(rs.getDate("dateofbirth"));
-                //customer.setGenderID(Integer.parseInt(rs.getString("genderid")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-*/
-        return null; // Jersey will automatically convert this to XML
+        return Response.status(Response.Status.OK).entity(customer).build();
     }
 }

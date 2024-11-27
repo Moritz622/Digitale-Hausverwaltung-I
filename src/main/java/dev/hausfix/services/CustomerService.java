@@ -6,6 +6,7 @@ import dev.hausfix.enumerators.EGender;
 import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.interfaces.ICustomerService;
 import dev.hausfix.sql.DatabaseConnection;
+import dev.hausfix.util.PropertyLoader;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -115,11 +116,11 @@ public class CustomerService extends Service implements ICustomerService {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public ArrayList<Customer> getAllCustomers() {
         try {
             ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM customers").executeQuery();
 
-            List<Customer> customers = new ArrayList<Customer>();
+            ArrayList<Customer> customers = new ArrayList<Customer>();
 
             while(resultsSet.next()){
                 Customer customer = new Customer();
