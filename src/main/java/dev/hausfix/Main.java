@@ -27,7 +27,5 @@ import java.util.Properties;
 public class Main {
     public static void main(String[] args) {
         Server.startServer("http://localhost:8069/rest");
-
-        Properties p = new PropertyLoader().getProperties("src/main/resources/hausfix.properties");
     }
 }

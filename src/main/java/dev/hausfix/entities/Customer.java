@@ -1,5 +1,7 @@
 package dev.hausfix.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.jna.platform.win32.WinUser;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.interfaces.ICustomer;
@@ -12,10 +14,16 @@ import java.util.UUID;
 @XmlRootElement
 public class Customer extends Entity implements ICustomer {
 
+    @JsonProperty("firstName")
     private String firstName;
+    @JsonProperty("lastName")
     private String lastName;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
+    @JsonProperty("gender")
     private EGender gender;
+    @JsonProperty("id")
     private UUID id;
 
     public Customer(){
@@ -56,21 +64,25 @@ public class Customer extends Entity implements ICustomer {
     }
 
     @Override
+    @JsonProperty("firstName")
     public String getFirstName() {
         return firstName;
     }
 
     @Override
+    @JsonProperty("lastName")
     public String getLastName() {
         return lastName;
     }
 
     @Override
+    @JsonProperty("birthDate")
     public LocalDate getBirthDate() {
         return birthDate;
     }
 
     @Override
+    @JsonProperty("gender")
     public EGender getGender() {
         return gender;
     }

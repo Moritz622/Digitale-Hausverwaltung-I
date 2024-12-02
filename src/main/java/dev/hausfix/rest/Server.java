@@ -14,7 +14,10 @@ public class Server {
         String pack = "dev.hausfix.rest.ressource";
         System.out.println("Start server");
         System.out.println(url);
-        ResourceConfig rc = new ResourceConfig().packages(pack);
+        ResourceConfig rc = new ResourceConfig()
+                .packages(pack)
+                .register(dev.hausfix.rest.CORSFilter.class); // Register CORS filter
+
         server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
     }
 
