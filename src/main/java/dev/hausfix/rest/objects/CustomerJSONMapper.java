@@ -31,7 +31,9 @@ public class CustomerJSONMapper {
         customer.setLastName(json.get("lastName").toString());
         customer.setGender(EGender.valueOf(json.get("gender").toString()));
         customer.setBirthDate(LocalDate.parse(json.get("birthDate").toString()));
-        customer.setId((UUID) json.get("id"));
+
+        if(json.has("id"))
+            customer.setId(UUID.fromString(json.get("id").toString()));
 
         return customer;
     }

@@ -21,7 +21,6 @@ import java.io.InputStream;
 public class CustomerRessource {
 
     @POST
-    @Path("addcustomer")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response addCustomer(String jsonString) {
@@ -39,7 +38,6 @@ public class CustomerRessource {
     }
 
     @GET
-    @Path("getcustomer")
     @Produces({MediaType.APPLICATION_JSON}) // Specify XML response
     public Response getCustomer() {
         DatabaseConnection dbConnection = new DatabaseConnection();
@@ -47,16 +45,18 @@ public class CustomerRessource {
 
         CustomerService customerService = new CustomerService(dbConnection);
 
-        Customer customer;
-
-        customer = customerService.getAllCustomers().get(0);
-
         CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
 
-        JSONObject customerJson = customerJSONMapper.mapCustomer(customer);
+        JSONObject main = new JSONObject();
 
-        customerJson = SchemaLoader.load(customerJson, "schema/CustomerJsonSchema.json");
+        JSONObject customerJSON = new JSONObject();
 
-        return Response.status(Response.Status.OK).entity(customerJson.toString()).build();
+        for(Customer customer: customerService.getAllCustomers()){
+            customerJSON.append("customer", SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").get("customer"));
+        }
+
+        main.put("customers", customerJSON);
+
+        return Response.status(Response.Status.OK).entity(main.toString()).build();
     }
 }
