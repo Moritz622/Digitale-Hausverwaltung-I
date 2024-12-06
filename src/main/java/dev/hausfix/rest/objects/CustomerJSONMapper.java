@@ -13,7 +13,7 @@ public class CustomerJSONMapper {
         JSONObject mainJson = new JSONObject();
 
         JSONObject customerJson = new JSONObject();
-        customerJson.put("uuid", customer.getId().toString());
+        customerJson.put("id", customer.getId().toString());
         customerJson.put("firstName", customer.getFirstName());
         customerJson.put("lastName", customer.getLastName());
         customerJson.put("birthDate", customer.getBirthDate().toString());

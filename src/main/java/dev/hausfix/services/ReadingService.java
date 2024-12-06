@@ -4,6 +4,8 @@ import dev.hausfix.entities.Customer;
 import dev.hausfix.entities.Reading;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.enumerators.EKindOfMeter;
+import dev.hausfix.exceptions.DuplicateEntryException;
+import dev.hausfix.exceptions.IncompleteDatasetException;
 import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.interfaces.ICustomer;
 import dev.hausfix.interfaces.IReadingService;
@@ -31,30 +33,27 @@ public class ReadingService extends Service implements IReadingService {
     }
 
     @Override
-    public void addReading(Reading reading) {
+    public void addReading(Reading reading) throws DuplicateEntryException, IncompleteDatasetException, SQLException {
         try {
             try {
                 getReading(reading.getId());
+                throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Datensatz mit der ID vorhanden");
             } catch (NoEntityFoundException e) {
-                System.out.println("Es ist schon ein Reading mit der id " + reading.getId() + " vorhanden!");
-                return;
+
             }
 
             String id = reading.getId().toString();
 
             if(reading.getDateOfReading() == null){
-                System.out.println("Reading konnte nicht angelegt werden: Fehlender Eintrag [Datum] (ID " + id + ")");
-                return;
+                throw new IncompleteDatasetException("Fehlender Eintrag: Datum");
             }
 
             if(reading.getKindOfMeter() == null){
-                System.out.println("Reading konnte nicht angelegt werden: Fehlender Eintrag [Messungs Typ] (ID " + id + ")");
-                return;
+                throw new IncompleteDatasetException("Fehlender Eintrag: Messtyp");
             }
 
             if(reading.getMeterId() == null){
-                System.out.println("Reading konnte nicht angelegt werden: Fehlender Eintrag [Messgeräts ID] (ID " + id + ")");
-                return;
+                throw new IncompleteDatasetException("Fehlender Eintrag: Messgerät ID");
             }
 
             String comment = reading.getComment();
@@ -66,17 +65,19 @@ public class ReadingService extends Service implements IReadingService {
             int substitute = 0;
 
             if(reading.getCustomer() == null){
-                System.out.println("Es wurde kein Kunde zu dem Reading angegeben, der Eintrag konnte nicht angelegt werden (ID " + reading.getId() + ")");
-                return;
+                throw new IncompleteDatasetException("Fehlender Eintrag: Kunde");
             }else{
                 customer = ((Customer) reading.getCustomer()).getId().toString();
 
                 try {
                     customerService.getCustomer(UUID.fromString(customer));
                 } catch (NoEntityFoundException e) {
-                    if(!customerService.addCustomer((Customer) reading.getCustomer())){
-                        System.out.println("Kunde zu Reading " + reading.getId() + " konnte nicht angelegt oder gefunden werden");
-                        return;
+                    try {
+                        if(!customerService.addCustomer((Customer) reading.getCustomer())){
+                            throw new IncompleteDatasetException("Kunde konnte nicht angelegt werden");
+                        }
+                    } catch (IncompleteDatasetException ex) {
+                        throw ex;
                     }
                 }
             }
@@ -86,7 +87,7 @@ public class ReadingService extends Service implements IReadingService {
             }
 
             if(comment == null){
-                System.out.printf("Warnung: Kein Kommentar für Reading " + reading.getId() + " angegeben");
+                //System.out.printf("Warnung: Kein Kommentar für Reading " + reading.getId() + " angegeben");
                 comment = "";
             }
 
@@ -102,23 +103,23 @@ public class ReadingService extends Service implements IReadingService {
                     "'" + substitute + "',"+
                     "'" + id + "')");
         } catch (SQLException e) {
-            System.out.println("Reading konnte nicht hinzugefügt werden");
+            throw e;
         }
     }
 
     @Override
-    public void removeReading(Reading reading) {
+    public void removeReading(Reading reading) throws NoEntityFoundException {
         try {
             Statement stmt = databaseConnection.getConnection().createStatement();
 
             stmt.executeQuery("DELETE FROM readings WHERE id = '" + reading.getId() + "'");
         } catch (SQLException e) {
-            System.out.println("Kein Reading mit der ID " + reading.getId() + " gefunden");
+            throw new NoEntityFoundException("Kein Eintrag gefunden: es konnte keine Messung mit der ID gefunden werden");
         }
     }
 
     @Override
-    public void updateReading(Reading reading) {
+    public void updateReading(Reading reading) throws NoEntityFoundException {
         try {
             String comment = reading.getComment();
             String customer;
@@ -148,7 +149,7 @@ public class ReadingService extends Service implements IReadingService {
                     "id = '" + id + "'" +
                     "WHERE id = '" + reading.getId() + "'");
         } catch (SQLException e) {
-            System.out.println("Kein Reading mit der ID " + reading.getId() + " gefunden");
+            throw new NoEntityFoundException("Kein Eintrag gefunden: es konnte keine Messung mit der ID gefunden werden");
         }
     }
 
@@ -185,8 +186,6 @@ public class ReadingService extends Service implements IReadingService {
 
             return readings;
         } catch (SQLException e) {
-            System.out.println("Keine Einträge vorhanden");
-
             return null;
         }
     }
@@ -226,9 +225,7 @@ public class ReadingService extends Service implements IReadingService {
 
             return reading;
         } catch (SQLException e) {
-            System.out.println("Kein Reading mit der ID " + id + " gefunden");
-
-            throw new NoEntityFoundException("No Reading found with ID " + id);
+            throw new NoEntityFoundException("Kein Eintrag gefunden: es konnte keine Messung mit der ID gefunden werden");
         }
     }
 }

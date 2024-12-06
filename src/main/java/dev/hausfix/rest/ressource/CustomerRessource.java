@@ -1,6 +1,9 @@
 package dev.hausfix.rest.ressource;
 
 import dev.hausfix.entities.Customer;
+import dev.hausfix.exceptions.DuplicateEntryException;
+import dev.hausfix.exceptions.IncompleteDatasetException;
+import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.rest.objects.CustomerJSONMapper;
 import dev.hausfix.services.CustomerService;
 import dev.hausfix.sql.DatabaseConnection;
@@ -10,6 +13,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import dev.hausfix.rest.schema.SchemaLoader;
 import jakarta.ws.rs.core.StreamingOutput;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -32,9 +36,14 @@ public class CustomerRessource {
         dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
         CustomerService customerService = new CustomerService(dbConnection);
 
-        customerService.addCustomer(customer);
+        try {
+            if(customerService.addCustomer(customer))
+                return Response.status(201, "Created").entity(customerJSONMapper.mapCustomer(customer).toString()).build();
+        } catch (IncompleteDatasetException | DuplicateEntryException e) {
+            return Response.status(400, "Bad Request: " + e.getMessage()).entity(null).build();
+        }
 
-        return Response.status(201).entity(customerJSONMapper.mapCustomer(customer).toString()).build();
+        return Response.status(400, "Bad Request").entity(null).build();
     }
 
     @GET
@@ -49,14 +58,41 @@ public class CustomerRessource {
 
         JSONObject main = new JSONObject();
 
-        JSONObject customerJSON = new JSONObject();
+        JSONArray customerJSON = new JSONArray();
 
         for(Customer customer: customerService.getAllCustomers()){
-            customerJSON.append("customer", SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").get("customer"));
+            customerJSON.put(SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").get("customer"));
         }
 
         main.put("customers", customerJSON);
 
-        return Response.status(Response.Status.OK).entity(main.toString()).build();
+        return Response.status(200, "Ok").entity(main.toString()).build();
+    }
+
+    @PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response putCustomer(String jsonString){
+        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+        Customer customer = customerJSONMapper.mapCustomer(new JSONObject(jsonString));
+
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        try {
+            if(customerService.getCustomer(customer.getId()) != null){
+                customerService.updateCustomer(customer);
+            }else{
+                return Response.status(404).entity("Not Found").build();
+            }
+
+            return Response.status(200).entity("Ok").build();
+        } catch (NoEntityFoundException e) {
+            return Response.status(404).entity("Not Found").build();
+        } catch (IncompleteDatasetException | DuplicateEntryException e) {
+            return Response.status(400).entity("Bad Request | " + e.getMessage()).build();
+        }
     }
 }
