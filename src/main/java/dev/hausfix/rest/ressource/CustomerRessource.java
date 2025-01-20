@@ -12,14 +12,10 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import dev.hausfix.rest.schema.SchemaLoader;
-import jakarta.ws.rs.core.StreamingOutput;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.util.UUID;
 
 @Path("customers")
 public class CustomerRessource {
@@ -93,6 +89,32 @@ public class CustomerRessource {
             return Response.status(404).entity("Not Found").build();
         } catch (IncompleteDatasetException | DuplicateEntryException e) {
             return Response.status(400).entity("Bad Request | " + e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/{uuid}")
+    @Produces({MediaType.TEXT_PLAIN})
+    public Response getCustomer(@PathParam("uuid") String uuid) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+        Customer customer = null;
+
+        try {
+            customer = customerService.getCustomer(UUID.fromString(uuid));
+
+            JSONObject customerJSON = new JSONObject();
+
+            customerJSON = (JSONObject) SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").get("customer");
+
+            return Response.status(200, "Ok").entity(customerJSON.toString()).build();
+        } catch (Exception e) {
+            return Response.status(404).entity("Not Found").build();
         }
     }
 }
