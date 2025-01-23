@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface IReadingService {
 
-    void addReading(Reading reading) throws DuplicateEntryException, IncompleteDatasetException, SQLException;
+    boolean addReading(Reading reading) throws DuplicateEntryException, IncompleteDatasetException, SQLException;
 
     void removeReading(Reading reading) throws NoEntityFoundException;
 

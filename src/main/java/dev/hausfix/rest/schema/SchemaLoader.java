@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 public class SchemaLoader {
 
-    public static JSONObject load(JSONObject customerJson, String schemaPath){
+    public static JSONObject load(JSONObject json, String schemaPath){
         try {
             InputStream schemaStream = new FileInputStream(schemaPath);
 
@@ -18,12 +18,12 @@ public class SchemaLoader {
 
             Schema schema = org.everit.json.schema.loader.SchemaLoader.load(schemaJson);
 
-            schema.validate(customerJson);
+            schema.validate(json);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        return customerJson;
+        return json;
     }
 
 }

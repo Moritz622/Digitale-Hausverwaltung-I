@@ -2,16 +2,13 @@ package dev.hausfix.services;
 
 import dev.hausfix.entities.Customer;
 import dev.hausfix.entities.Reading;
-import dev.hausfix.enumerators.EGender;
 import dev.hausfix.enumerators.EKindOfMeter;
 import dev.hausfix.exceptions.DuplicateEntryException;
 import dev.hausfix.exceptions.IncompleteDatasetException;
 import dev.hausfix.exceptions.NoEntityFoundException;
-import dev.hausfix.interfaces.ICustomer;
 import dev.hausfix.interfaces.IReadingService;
 import dev.hausfix.sql.DatabaseConnection;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,7 +30,7 @@ public class ReadingService extends Service implements IReadingService {
     }
 
     @Override
-    public void addReading(Reading reading) throws DuplicateEntryException, IncompleteDatasetException, SQLException {
+    public boolean addReading(Reading reading) throws DuplicateEntryException, IncompleteDatasetException, SQLException {
         try {
             try {
                 getReading(reading.getId());
@@ -103,8 +100,11 @@ public class ReadingService extends Service implements IReadingService {
                     "'" + substitute + "',"+
                     "'" + id + "')");
         } catch (SQLException e) {
-            throw e;
+            System.out.println("Reading konnte nicht hinzugefügt werden.");
+            return false;
         }
+
+        return true;
     }
 
     @Override

@@ -2,6 +2,7 @@ package dev.hausfix.rest.objects;
 
 import dev.hausfix.entities.Customer;
 import dev.hausfix.enumerators.EGender;
+import dev.hausfix.rest.schema.SchemaLoader;
 import org.json.JSONObject;
 
 import java.time.LocalDate;

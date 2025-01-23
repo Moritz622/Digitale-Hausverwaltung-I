@@ -33,8 +33,9 @@ public class CustomerRessource {
         CustomerService customerService = new CustomerService(dbConnection);
 
         try {
-            if(customerService.addCustomer(customer))
-                return Response.status(201, "Created").entity(customerJSONMapper.mapCustomer(customer).toString()).build();
+            if(customerService.addCustomer(customer)) {
+                return Response.status(201, "Created").entity(SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").toString()).build();
+            }
         } catch (IncompleteDatasetException | DuplicateEntryException e) {
             return Response.status(400, "Bad Request: " + e.getMessage()).entity(null).build();
         }

@@ -66,7 +66,6 @@ public class CustomerService extends Service implements ICustomerService {
             if(gender == null){
                 gender = EGender.U;
             }
-
         try {
             databaseConnection.getConnection().prepareStatement("INSERT INTO customers (id,lastname,firstname,email,password,birthdate,gender) VALUES ('" + id + "','" + lastname + "','" + firstname + "','" + email + "'," + password + ",DATE('" + birthdate + "'),'" + gender + "');").executeQuery();
         } catch (SQLException e) {
