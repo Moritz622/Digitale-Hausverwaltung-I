@@ -5,6 +5,7 @@ import dev.hausfix.entities.Reading;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.enumerators.EKindOfMeter;
 import dev.hausfix.exceptions.NoEntityFoundException;
+import dev.hausfix.rest.schema.SchemaLoader;
 import dev.hausfix.services.CustomerService;
 import dev.hausfix.sql.DatabaseConnection;
 import dev.hausfix.util.PropertyLoader;
@@ -22,9 +23,11 @@ public class ReadingJSONMapper {
     public JSONObject mapReading(Reading reading){
         JSONObject mainJson = new JSONObject();
 
+        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
         JSONObject readingJson = new JSONObject();
         readingJson.put("id", reading.getId().toString());
-        readingJson.put("customer", ((Customer)reading.getCustomer()).getId());
+        readingJson.put("customer", SchemaLoader.load(customerJSONMapper.mapCustomer((Customer) reading.getCustomer()), "schema/CustomerJsonSchema.json").get("customer"));
         readingJson.put("dateOfReading", reading.getDateOfReading().toString());
         readingJson.put("kindOfMeter", reading.getKindOfMeter().toString());
         readingJson.put("meterCount", reading.getMeterCount());
@@ -45,9 +48,8 @@ public class ReadingJSONMapper {
 
         CustomerService customerService = new CustomerService(dbConnection);
 
-        reading.setId(UUID.fromString(json.get("id").toString()));
         try {
-            reading.setCustomer(customerService.getCustomer(UUID.fromString(json.get("customer").toString())));
+            reading.setCustomer(customerService.getCustomer(UUID.fromString(json.getJSONObject("customer").get("id").toString())));
         } catch (NoEntityFoundException e) {
             throw new RuntimeException(e);
         }

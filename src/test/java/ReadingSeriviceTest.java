@@ -144,7 +144,7 @@ class ReadingServiceIntegrationTest {
         reading.setId(UUID.randomUUID());
         reading.setCustomer(customer);
         reading.setDateOfReading(LocalDate.now());
-        reading.setKindOfMeter(EKindOfMeter.Strom);
+        reading.setKindOfMeter(EKindOfMeter.STROM);
         reading.setMeterCount(250.0);
         reading.setMeterId("12345ABC");
         reading.setSubstitute(false);
@@ -155,7 +155,7 @@ class ReadingServiceIntegrationTest {
         Reading reading = new Reading();
         reading.setId(UUID.randomUUID());
         reading.setDateOfReading(LocalDate.now());
-        reading.setKindOfMeter(EKindOfMeter.Strom);  // Set appropriate meter type
+        reading.setKindOfMeter(EKindOfMeter.STROM);  // Set appropriate meter type
         reading.setMeterId("meter123");
         reading.setMeterCount(100.5);
         reading.setComment("Test reading without customer");

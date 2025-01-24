@@ -9,9 +9,7 @@ import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.interfaces.IReadingService;
 import dev.hausfix.sql.DatabaseConnection;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,8 @@ public class ReadingService extends Service implements IReadingService {
 
             String id = reading.getId().toString();
 
+            System.out.println(id);
+
             if(reading.getDateOfReading() == null){
                 throw new IncompleteDatasetException("Fehlender Eintrag: Datum");
             }
@@ -68,7 +68,7 @@ public class ReadingService extends Service implements IReadingService {
 
                 try {
                     customerService.getCustomer(UUID.fromString(customer));
-                } catch (NoEntityFoundException e) {
+                } catch (Exception e) {
                     try {
                         if(!customerService.addCustomer((Customer) reading.getCustomer())){
                             throw new IncompleteDatasetException("Kunde konnte nicht angelegt werden");
@@ -165,13 +165,15 @@ public class ReadingService extends Service implements IReadingService {
 
                 reading.setId(UUID.fromString(resultsSet.getString("id")));
                 reading.setComment(resultsSet.getString("comment"));
+
                 try {
                     reading.setCustomer(customerService.getCustomer(UUID.fromString(resultsSet.getString("customerId"))));
-                } catch (NoEntityFoundException e) {
+                } catch (Exception e) {
                     reading.setCustomer(null);
                 }
+
                 reading.setDateOfReading(LocalDate.parse(resultsSet.getString("dateOfReading")));
-                reading.setKindOfMeter(EKindOfMeter.valueOf(resultsSet.getString("kindOfMeter")));
+                reading.setKindOfMeter(EKindOfMeter.valueOf(resultsSet.getString("kindOfMeter").toUpperCase()));
                 reading.setMeterCount(Double.parseDouble(resultsSet.getString("meterCount")));
                 reading.setMeterId(resultsSet.getString("meterId"));
 
@@ -213,7 +215,7 @@ public class ReadingService extends Service implements IReadingService {
             reading.setComment(resultsSet.getString("comment"));
 
             reading.setDateOfReading(LocalDate.parse(resultsSet.getString("dateOfReading")));
-            reading.setKindOfMeter(EKindOfMeter.valueOf(resultsSet.getString("kindOfMeter")));
+            reading.setKindOfMeter(EKindOfMeter.valueOf(resultsSet.getString("kindOfMeter").toUpperCase()));
             reading.setMeterCount(Double.parseDouble(resultsSet.getString("meterCount")));
             reading.setMeterId(resultsSet.getString("meterId"));
 
@@ -227,5 +229,54 @@ public class ReadingService extends Service implements IReadingService {
         } catch (SQLException e) {
             throw new NoEntityFoundException("Kein Eintrag gefunden: es konnte keine Messung mit der ID gefunden werden");
         }
+    }
+
+    public List<Reading> getReadingsByCriteria(UUID uuid, LocalDate start, LocalDate end, EKindOfMeter kindOfMeter) throws SQLException {
+        String query = "SELECT * FROM readings WHERE customerId = ? AND dateOfReading >= ? AND dateOfReading <= ?"; // Base query
+
+        if(kindOfMeter != null){
+            query += " AND kindOfMeter = ?";
+        }
+
+        PreparedStatement stmt = databaseConnection.getConnection().prepareStatement(query);
+        stmt.setString(1,uuid.toString());
+        stmt.setDate(2, Date.valueOf(start));
+        stmt.setDate(3, Date.valueOf(end));
+
+        if(kindOfMeter != null){
+            stmt.setString(4, kindOfMeter.toString());
+        }
+
+        ResultSet rs = stmt.executeQuery();
+
+        List<Reading> readings = new ArrayList<Reading>();
+
+        while(rs.next()){
+            Reading reading = new Reading();
+
+            reading.setId(UUID.fromString(rs.getString("id")));
+            reading.setComment(rs.getString("comment"));
+
+            try {
+                reading.setCustomer(customerService.getCustomer(UUID.fromString(rs.getString("customerId"))));
+            } catch (Exception e) {
+                reading.setCustomer(null);
+            }
+
+            reading.setDateOfReading(LocalDate.parse(rs.getString("dateOfReading")));
+            reading.setKindOfMeter(EKindOfMeter.valueOf(rs.getString("kindOfMeter").toUpperCase()));
+            reading.setMeterCount(Double.parseDouble(rs.getString("meterCount")));
+            reading.setMeterId(rs.getString("meterId"));
+
+            if(rs.getBoolean("substitute")){
+                reading.setSubstitute(true);
+            }else{
+                reading.setSubstitute(false);
+            }
+
+            readings.add(reading);
+        }
+
+        return readings;
     }
 }

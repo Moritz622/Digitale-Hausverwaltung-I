@@ -11,10 +11,18 @@ import dev.hausfix.util.Helper;
 import dev.hausfix.util.PropertyLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
 
 public class CustomerResourceTest {
+
+    private static Helper helper;
+
+    @BeforeAll
+    public static void init(){
+        helper = new Helper();
+    }
 
     @Test
     public void getCustomers() {
@@ -24,8 +32,8 @@ public class CustomerResourceTest {
         CustomerService customerService = new CustomerService(dbConnection);
         dbConnection.truncateAllTables();
 
-        Helper helper = new Helper();
         Customer customer = helper.getCustomer();
+
         try {
             customerService.addCustomer(customer);
         } catch (IncompleteDatasetException e) {
@@ -40,8 +48,8 @@ public class CustomerResourceTest {
 
         Customer marco = customerJSONMapper.mapCustomer(jsonArray.getJSONObject(0));
 
-        assertEquals("Marco",marco.getFirstName());
-        assertEquals("Polo",marco.getLastName());
+        assertEquals(customer.getFirstName(), marco.getFirstName());
+        assertEquals(customer.getLastName(), marco.getLastName());
     }
 
     @Test
@@ -52,7 +60,6 @@ public class CustomerResourceTest {
         CustomerService customerService = new CustomerService(dbConnection);
         dbConnection.truncateAllTables();
 
-        Helper helper = new Helper();
         Customer customer = helper.getCustomer();
 
         CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
@@ -62,7 +69,7 @@ public class CustomerResourceTest {
         try {
             Customer marco = customerService.getCustomer(customer.getId());
 
-            assertEquals("Marco",marco.getFirstName());
+            assertEquals(customer.getFirstName(), marco.getFirstName());
         } catch (NoEntityFoundException e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +83,6 @@ public class CustomerResourceTest {
         CustomerService customerService = new CustomerService(dbConnection);
         dbConnection.truncateAllTables();
 
-        Helper helper = new Helper();
         Customer customer = helper.getCustomer();
 
         try {

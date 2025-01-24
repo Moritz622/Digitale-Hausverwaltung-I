@@ -32,40 +32,41 @@ public class CustomerService extends Service implements ICustomerService {
 
     @Override
     public boolean addCustomer(Customer customer) throws IncompleteDatasetException, DuplicateEntryException {
-            List<Customer> customers = getAllCustomers().stream().filter(item -> item.getFirstName().equals(customer.getFirstName()) & item.getLastName().equals(customer.getLastName())).collect(Collectors.toList());
+        List<Customer> customers = getAllCustomers().stream().filter(item -> item.getFirstName().equals(customer.getFirstName()) & item.getLastName().equals(customer.getLastName())).collect(Collectors.toList());
 
-            if(!customers.isEmpty()){
-                throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit demselben Vor und Nachnamen vorhanden");
-            }
+        if(!customers.isEmpty()){
+            throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit demselben Vor und Nachnamen vorhanden");
+        }
 
-            try {
-                getCustomer(customer.getId());
-                throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit der ID vorhanden");
-            } catch (NoEntityFoundException e) {}
+        try {
+            getCustomer(customer.getId());
+            throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit der ID vorhanden");
+        } catch (NoEntityFoundException e) {}
 
-            String id = customer.getId().toString();
-            String lastname = customer.getLastName();
-            String firstname = customer.getFirstName();
-            String email = "test";
-            String password = "1234";
-            String birthdate = customer.getBirthDate().toString();
-            EGender gender = customer.getGender();
+        String id = customer.getId().toString();
+        String lastname = customer.getLastName();
+        String firstname = customer.getFirstName();
+        String email = "test";
+        String password = "1234";
+        String birthdate = customer.getBirthDate().toString();
+        EGender gender = customer.getGender();
 
-            if(lastname == null){
-                throw new IncompleteDatasetException("Fehlender Eintrag: Nachname");
-            }
+        if(lastname == null){
+            throw new IncompleteDatasetException("Fehlender Eintrag: Nachname");
+        }
 
-            if(firstname == null){
-                throw new IncompleteDatasetException("Fehlender Eintrag: Vorname");
-            }
+        if(firstname == null){
+            throw new IncompleteDatasetException("Fehlender Eintrag: Vorname");
+        }
 
-            if(birthdate == null){
-                throw new IncompleteDatasetException("Fehlender Eintrag: Geburtsdatum");
-            }
+        if(birthdate == null){
+            throw new IncompleteDatasetException("Fehlender Eintrag: Geburtsdatum");
+        }
 
-            if(gender == null){
-                gender = EGender.U;
-            }
+        if(gender == null){
+            gender = EGender.U;
+        }
+
         try {
             databaseConnection.getConnection().prepareStatement("INSERT INTO customers (id,lastname,firstname,email,password,birthdate,gender) VALUES ('" + id + "','" + lastname + "','" + firstname + "','" + email + "'," + password + ",DATE('" + birthdate + "'),'" + gender + "');").executeQuery();
         } catch (SQLException e) {

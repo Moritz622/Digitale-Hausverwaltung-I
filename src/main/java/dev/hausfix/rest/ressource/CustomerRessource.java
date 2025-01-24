@@ -1,17 +1,21 @@
 package dev.hausfix.rest.ressource;
 
 import dev.hausfix.entities.Customer;
+import dev.hausfix.entities.Reading;
 import dev.hausfix.exceptions.DuplicateEntryException;
 import dev.hausfix.exceptions.IncompleteDatasetException;
 import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.rest.objects.CustomerJSONMapper;
+import dev.hausfix.rest.objects.ReadingJSONMapper;
 import dev.hausfix.services.CustomerService;
+import dev.hausfix.services.ReadingService;
 import dev.hausfix.sql.DatabaseConnection;
 import dev.hausfix.util.PropertyLoader;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import dev.hausfix.rest.schema.SchemaLoader;
+import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,6 +23,36 @@ import java.util.UUID;
 
 @Path("customers")
 public class CustomerRessource {
+
+    @DELETE
+    @Path("/{uuid}")
+    @Produces({MediaType.TEXT_PLAIN})
+    public Response deleteCustomers(@PathParam("uuid") String uuid) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        ReadingService readingService = new ReadingService(dbConnection);
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
+        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+        try {
+            JSONObject customerJSON = new JSONObject();
+
+            Customer customer = customerService.getCustomer(UUID.fromString(uuid));
+
+            customerJSON = (JSONObject) SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").get("customer");
+
+            customerService.removeCustomer(customer);
+
+            return Response.status(200, "Ok").entity(customerJSON.toString()).build();
+        } catch (NoEntityFoundException e) {
+            return Response.status(404).entity("Not Found").build();
+        }
+    }
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -63,7 +97,7 @@ public class CustomerRessource {
 
         main.put("customers", customerJSON);
 
-        return Response.status(200, "Ok").entity(main.toString()).build();
+        return Response.status(200, "Ok").entity(SchemaLoader.load(main, "schema/CustomersJsonSchema.json").toString()).build();
     }
 
     @PUT
