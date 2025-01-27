@@ -81,6 +81,8 @@ Das Projekt gliedert sich in zwei Sprints:
 </li>
 </ol>
 
+![Unbenanntes Diagramm drawio](https://github.com/user-attachments/assets/f383803b-c271-4185-ad73-0d15b48e2bb8)
+
 <h2 id="api-endpunkte">API-Endpunkte</h2>
 <table>
 <thead>
