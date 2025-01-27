@@ -55,7 +55,7 @@ public class ReadingJSONMapper {
         }
         reading.setDateOfReading(LocalDate.parse(json.get("dateOfReading").toString()));
         reading.setKindOfMeter(EKindOfMeter.valueOf(json.get("kindOfMeter").toString()));
-        reading.setMeterCount(Integer.parseInt(json.get("meterCount").toString()));
+        reading.setMeterCount(Double.parseDouble(json.get("meterCount").toString()));
         reading.setMeterId(json.get("meterId").toString());
         reading.setComment(json.get("comment").toString());
         reading.setSubstitute(Boolean.parseBoolean(json.get("substitute").toString()));

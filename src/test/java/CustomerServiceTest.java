@@ -8,11 +8,15 @@ import dev.hausfix.services.ReadingService;
 import dev.hausfix.sql.DatabaseConnection;
 import dev.hausfix.util.PropertyLoader;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.params.ParameterizedTest;
 
 import java.time.LocalDate;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +28,6 @@ class CustomerServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        // Datenbankverbindung einrichten
         dbConnection = new DatabaseConnection();
         Properties properties = new PropertyLoader().getProperties("src/main/resources/hausfix.properties");
         dbConnection.openConnection(properties);
