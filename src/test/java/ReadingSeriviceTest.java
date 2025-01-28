@@ -9,6 +9,7 @@ import dev.hausfix.services.CustomerService;
 import dev.hausfix.services.ReadingService;
 import dev.hausfix.sql.DatabaseConnection;
 import dev.hausfix.util.PropertyLoader;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,6 +38,34 @@ class ReadingServiceIntegrationTest {
         readingService = new ReadingService(dbConnection);
         readingService.setCustomerService(customerService); // Dependency Injection
         customerService.setReadingService(readingService);
+    }
+
+    @Test
+    void addReadingError1(){
+        Reading r = new Reading();
+        r.setComment("test");
+        r.setKindOfMeter(EKindOfMeter.WASSER);
+        r.setSubstitute(true);
+        r.setDateOfReading(null);
+        r.setMeterId("1");
+
+        assertThrows(IncompleteDatasetException.class, () -> {
+            readingService.addReading(r);
+        });
+
+        r.setDateOfReading(LocalDate.now());
+        r.setKindOfMeter(null);
+
+        assertThrows(IncompleteDatasetException.class, () -> {
+            readingService.addReading(r);
+        });
+
+        r.setKindOfMeter(EKindOfMeter.STROM);
+        r.setMeterId(null);
+
+        assertThrows(IncompleteDatasetException.class, () -> {
+            readingService.addReading(r);
+        });
     }
 
     @Test

@@ -5,7 +5,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("world")
+@Path("rest/world")
 public class HelloWorldRessource {
     @GET
     @Path("hello")

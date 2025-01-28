@@ -55,6 +55,23 @@ class CustomerServiceIntegrationTest {
         // Assert
         assertTrue(result);
         assertDoesNotThrow(() -> customerService.getCustomer(customer.getId()));
+
+        Customer marco = new Customer();
+
+        marco.setLastName(null);
+        marco.setFirstName(null);
+        marco.setBirthDate(LocalDate.now());
+        marco.setGender(null);
+
+        assertThrows(IncompleteDatasetException.class, () -> {
+            customerService.addCustomer(marco);
+        });
+
+        marco.setLastName("polo");
+
+        assertThrows(IncompleteDatasetException.class, () -> {
+            customerService.addCustomer(marco);
+        });
     }
 
     @Test
@@ -133,6 +150,21 @@ class CustomerServiceIntegrationTest {
 
         // Assert
         assertEquals("Sarah", updatedCustomer.getFirstName());
+
+        customer.setLastName(null);
+        customer.setFirstName(null);
+        customer.setBirthDate(LocalDate.now());
+        customer.setGender(null);
+
+        assertThrows(IncompleteDatasetException.class, () -> {
+            customerService.updateCustomer(customer);
+        });
+
+        customer.setLastName("polo");
+
+        assertThrows(IncompleteDatasetException.class, () -> {
+            customerService.updateCustomer(customer);
+        });
     }
 
     @Test

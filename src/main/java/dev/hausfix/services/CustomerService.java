@@ -106,7 +106,13 @@ public class CustomerService extends Service implements ICustomerService {
         String id = customer.getId().toString();
         String lastname = customer.getLastName();
         String firstname = customer.getFirstName();
-        String birthdate = customer.getBirthDate().toString();
+        String birthdate = null;
+
+
+        if(customer.getBirthDate() != null){
+            birthdate = customer.getBirthDate().toString();
+        }
+
         EGender gender = customer.getGender();
 
         if(lastname == null){
@@ -117,7 +123,7 @@ public class CustomerService extends Service implements ICustomerService {
             throw new IncompleteDatasetException("Fehlender Eintrag: Vorname");
         }
 
-        if(birthdate == null){
+        if(customer.getBirthDate() == null){
             throw new IncompleteDatasetException("Fehlender Eintrag: Geburtsdatum");
         }
 

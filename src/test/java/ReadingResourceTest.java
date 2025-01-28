@@ -109,6 +109,14 @@ public class ReadingResourceTest {
         Reading reading = readingJSONMapper.mapReading(jsonArray.getJSONObject(0));
 
         assertEquals(helper.reading.getComment(), reading.getComment());
+
+        jsonObject = new JSONObject(readingRessource.getReadingsByCriteria(helper.customerUUID.toString(), null, helper.reading.getDateOfReading().toString(), helper.reading.getKindOfMeter().toString()).getEntity().toString());
+
+        jsonObject = new JSONObject(readingRessource.getReadingsByCriteria(helper.customerUUID.toString(), helper.reading.getDateOfReading().toString(), null, helper.reading.getKindOfMeter().toString()).getEntity().toString());
+
+        readingRessource.getReadingsByCriteria(null, helper.reading.getDateOfReading().toString(), null, helper.reading.getKindOfMeter().toString()).getEntity().toString();
+
+        jsonObject = new JSONObject(readingRessource.getReadingsByCriteria(helper.customerUUID.toString(), helper.reading.getDateOfReading().toString(), helper.reading.getDateOfReading().toString(), null));
     }
 
     @Test
@@ -140,6 +148,10 @@ public class ReadingResourceTest {
         }
 
         assertEquals("Nina", r.getComment());
+
+        r.setId(UUID.fromString("76fa051f-83ee-48c1-9bca-9e4468b29d08"));
+
+        readingRessource.putReading(readingJSONMapper.mapReading(r).get("reading").toString());
     }
 
 }

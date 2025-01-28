@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
-@Path("customers")
+@Path("rest/customers")
 public class CustomerRessource {
 
     @DELETE

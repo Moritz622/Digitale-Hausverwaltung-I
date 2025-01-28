@@ -1,5 +1,7 @@
 body {
-
+    background-color: #333;
+    color: white;
+    overflow: hidden;
 }
 
 background {
@@ -17,8 +19,7 @@ background {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    width: 390px;
-    box-shadow: 0px 0px 50px 1px grey;
+    width: 450px;
     padding: 10px;
     border-radius: 16px;
     line-height: 25px;
@@ -28,6 +29,25 @@ background {
     vertical-align: middle;
 }
 
+.centerForm {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform-origin: center;
+    width: 550px;
+    height: 550px;
+    padding: 10px;
+    border-radius: 16px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    vertical-align: middle;
+    box-shadow: 0px 0px 50px 1px grey;
+}
+
 .center input {
     border-bottom: solid 2px grey;
     border-top: none;
@@ -35,6 +55,8 @@ background {
     border-right: none;
     font-size: 20px;
     margin-top: 40px;
+    background-color: transparent;
+    color: white;
 }
 
     .center input:focus {
@@ -42,7 +64,7 @@ background {
     }
 
     .center h1 {
-        font-family: 'Bradley Hand ITC';
+        font-family: Roboto;
         font-size: 48px;
         margin-top: 32px;
     }
@@ -50,17 +72,21 @@ background {
     .center button {
         font-size: 24px;
         border-radius: 20px;
-        margin-top: 96px;
+        margin-top: 32px;
         width: 256px;
         height: 48px;
         margin-bottom: 32px;
         border: none;
-        background: linear-gradient(45deg, pink, lightblue);
+        background: #642B73;
+        background: -webkit-linear-gradient(to bottom, #C6426E, #642B73);
+        background: linear-gradient(45deg, #C6426E, #642B73);
+        color: white;
+
         cursor: pointer;
     }
 
     .center button:hover {
-        outline: solid 1px black;
+        outline: solid 2px white;
     }
 
     .center span {
@@ -72,4 +98,31 @@ background {
     .center a {
         text-decoration: solid;
         text-decoration-line: underline;
+        color: white;
     }
+
+        .center a:visited {
+            color: white;
+        }
+
+.formContainer {
+    animation: loginSuccessfull 2s ease 1;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform-origin: center;
+    width: fit-content;
+    height: fit-content;
+}
+
+@keyframes loginSuccessfull {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+}

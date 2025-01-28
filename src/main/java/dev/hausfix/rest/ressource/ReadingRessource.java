@@ -28,7 +28,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.UUID;
 
-@Path("readings")
+@Path("rest/readings")
 public class ReadingRessource {
 
     @DELETE

@@ -6,7 +6,7 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
-@Path("setupDB")
+@Path("rest/setupDB")
 public class DBRessource {
 
     @DELETE
