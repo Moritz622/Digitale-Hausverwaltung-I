@@ -6,6 +6,7 @@ import com.sun.jna.platform.win32.WinUser;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.interfaces.ICustomer;
 import dev.hausfix.interfaces.IID;
+import dev.hausfix.interfaces.IUser;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.time.LocalDate;
@@ -14,11 +15,11 @@ import java.util.UUID;
 @XmlRootElement
 public class Customer extends Entity implements ICustomer {
 
+    private IUser user;
     @JsonProperty("firstName")
     private String firstName;
     @JsonProperty("lastName")
     private String lastName;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     @JsonProperty("gender")
@@ -64,6 +65,11 @@ public class Customer extends Entity implements ICustomer {
     }
 
     @Override
+    public void setUser(IUser user) {
+        this.user = user;
+    }
+
+    @Override
     @JsonProperty("firstName")
     public String getFirstName() {
         return firstName;
@@ -85,5 +91,10 @@ public class Customer extends Entity implements ICustomer {
     @JsonProperty("gender")
     public EGender getGender() {
         return gender;
+    }
+
+    @Override
+    public IUser getUser() {
+        return user;
     }
 }

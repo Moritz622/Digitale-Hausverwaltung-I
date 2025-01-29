@@ -3,6 +3,7 @@
 <head>
     <title>HausFix</title>
     <link rel="stylesheet" href="style.css">
+    <script src="register.js"></script>
 </head>
     <body>
         <background>
@@ -14,11 +15,11 @@
 
             <div class="center">
                 <h1>HausFix</h1>
-                <input placeholder="username" />
-                <input placeholder="e-mail" type="email" />
-                <input type="password" placeholder="password" />
-                <input type="password" placeholder="confirm password" />
-                <button>Sign Up</button>
+                <input placeholder="username" id="username"/>
+                <input placeholder="e-mail" type="email" id="email"/>
+                <input type="password" placeholder="password" id="password1"/>
+                <input type="password" placeholder="confirm password" id="password2"/>
+                <button onclick="register()">Sign Up</button>
                 <span>Already have an account? <a href="index.html">Log in</a></span>
             </div>
         </background>

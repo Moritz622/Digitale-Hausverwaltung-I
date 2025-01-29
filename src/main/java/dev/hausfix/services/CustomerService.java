@@ -2,6 +2,7 @@ package dev.hausfix.services;
 
 import dev.hausfix.entities.Customer;
 import dev.hausfix.entities.Reading;
+import dev.hausfix.entities.User;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.exceptions.DuplicateEntryException;
 import dev.hausfix.exceptions.IncompleteDatasetException;
@@ -50,6 +51,9 @@ public class CustomerService extends Service implements ICustomerService {
         String password = "1234";
         String birthdate = customer.getBirthDate().toString();
         EGender gender = customer.getGender();
+        String userID;
+
+        User user = (User)customer.getUser();
 
         if(lastname == null){
             throw new IncompleteDatasetException("Fehlender Eintrag: Nachname");
@@ -59,8 +63,10 @@ public class CustomerService extends Service implements ICustomerService {
             throw new IncompleteDatasetException("Fehlender Eintrag: Vorname");
         }
 
-        if(birthdate == null){
-            throw new IncompleteDatasetException("Fehlender Eintrag: Geburtsdatum");
+        if(user == null){
+            userID = "";
+        }else{
+            userID = user.getId().toString();
         }
 
         if(gender == null){
@@ -68,9 +74,9 @@ public class CustomerService extends Service implements ICustomerService {
         }
 
         try {
-            databaseConnection.getConnection().prepareStatement("INSERT INTO customers (id,lastname,firstname,email,password,birthdate,gender) VALUES ('" + id + "','" + lastname + "','" + firstname + "','" + email + "'," + password + ",DATE('" + birthdate + "'),'" + gender + "');").executeQuery();
+            databaseConnection.getConnection().prepareStatement("INSERT INTO customers (id,lastname,firstname,email,password,userid,birthdate,gender) VALUES ('" + id + "','" + lastname + "','" + firstname + "','" + email + "','" + password + "','" + userID + "',DATE('" + birthdate + "'),'" + gender  + "');").executeQuery();
         } catch (SQLException e) {
-            System.out.println("Kunde konnte nicht hinzugefügt werden.");
+            System.out.println("Kunde konnte nicht hinzugefügt werden." + e.getMessage());
             return false;
         }
 
@@ -107,7 +113,15 @@ public class CustomerService extends Service implements ICustomerService {
         String lastname = customer.getLastName();
         String firstname = customer.getFirstName();
         String birthdate = null;
+        String userID = "";
 
+        User user = (User)customer.getUser();
+
+        if(user == null){
+            userID = "";
+        }else{
+            userID = user.getId().toString();
+        }
 
         if(customer.getBirthDate() != null){
             birthdate = customer.getBirthDate().toString();
@@ -131,17 +145,22 @@ public class CustomerService extends Service implements ICustomerService {
             gender = EGender.U;
         }
 
+        if(userID == null){
+            userID = "";
+        }
+
         try {
             Statement stmt = databaseConnection.getConnection().createStatement();
 
             stmt.executeQuery("UPDATE customers " +
                     "SET lastname = '" + lastname + "'," +
                     "firstname = '" + firstname + "'," +
+                    "userid = '" + userID + "'," +
                     "gender = '" + gender + "'," +
-                    "birthdate = '" + birthdate + "'" +
+                    "birthdate = '" + birthdate + "' " +
                     "WHERE id = '" + id + "'");
         } catch (SQLException e) {
-            throw new NoEntityFoundException("Es konnte kein Kunde mit der ID gefunden werden");
+            throw new NoEntityFoundException("Es konnte kein Kunde mit der ID gefunden werden " + e.getMessage());
         }
     }
 
@@ -152,6 +171,8 @@ public class CustomerService extends Service implements ICustomerService {
 
             ArrayList<Customer> customers = new ArrayList<Customer>();
 
+            UserService userService = new UserService(databaseConnection);
+
             while(resultsSet.next()){
                 Customer customer = new Customer();
 
@@ -160,6 +181,12 @@ public class CustomerService extends Service implements ICustomerService {
                 customer.setFirstName(resultsSet.getString("firstname"));
                 customer.setBirthDate(resultsSet.getDate("birthdate").toLocalDate());
                 customer.setGender(EGender.valueOf(resultsSet.getString("gender")));
+
+                try{
+                    customer.setUser(userService.getUser(UUID.fromString(resultsSet.getString("userid"))));
+                }catch(Exception e){
+                    customer.setUser(null);
+                }
 
                 customers.add(customer);
             }
@@ -186,6 +213,14 @@ public class CustomerService extends Service implements ICustomerService {
             customer.setFirstName(resultsSet.getString("firstname"));
             customer.setBirthDate(resultsSet.getDate("birthdate").toLocalDate());
             customer.setGender(EGender.valueOf(resultsSet.getString("gender")));
+
+            UserService userService = new UserService(databaseConnection);
+
+            try{
+                customer.setUser(userService.getUser(UUID.fromString(resultsSet.getString("userid"))));
+            }catch(Exception e){
+                customer.setUser(null);
+            }
 
             return customer;
         } catch (SQLException e) {

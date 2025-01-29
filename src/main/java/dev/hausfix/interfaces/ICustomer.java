@@ -9,10 +9,12 @@ public interface ICustomer {
     void setLastName(String lastName);
     void setBirthDate(LocalDate birthDate);
     void setGender(EGender gender);
+    void setUser(IUser user);
 
     String getFirstName();
     String getLastName();
     LocalDate getBirthDate();
     EGender getGender();
+    IUser getUser();
 
 }

@@ -21,6 +21,30 @@ import java.util.UUID;
 @Path("rest/users")
 public class UserRessource {
 
+    @POST
+    @Path("/register")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response registerUser(String jsonString){
+        UserJSONMapper userJSONMapper = new UserJSONMapper();
+
+        User user = userJSONMapper.mapUser(new JSONObject(jsonString));
+
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+        UserService userService = new UserService(dbConnection);
+
+        try {
+            if(userService.addUser(user)) {
+                return Response.status(201, "Created").entity(SchemaLoader.load(userJSONMapper.mapUser(user), "schema/UserJsonSchema.json").toString()).build();
+            }
+        } catch (IncompleteDatasetException | DuplicateEntryException e) {
+            return Response.status(400, "Bad Request: " + e.getMessage()).entity(null).build();
+        }
+
+        return Response.status(400, "Bad Request").entity(null).build();
+    }
+
     @DELETE
     @Path("/{uuid}")
     @Produces({MediaType.TEXT_PLAIN})
@@ -121,5 +145,27 @@ public class UserRessource {
         } catch (Exception e) {
             return Response.status(404).entity("Not Found").build();
         }
+    }
+
+    @POST
+    @Path("/login")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response login(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        UserService userService = new UserService(dbConnection);
+
+        UserJSONMapper userJSONMapper = new UserJSONMapper();
+
+        User user = userJSONMapper.mapUser(new JSONObject(jsonString));
+
+        if (userService.login(user)){
+            return Response.status(200, "Ok").build();
+        }
+        else{
+            return Response.status(400, "not found").build();
+        }
+
     }
 }

@@ -25,6 +25,7 @@ public class Helper {
         customer.setBirthDate(LocalDate.parse("1969-04-30"));
         customer.setGender(EGender.U);
         customer.setId(customerUUID);
+        customer.setUser(null);
 
         reading = new Reading();
         reading.setCustomer(getCustomer());

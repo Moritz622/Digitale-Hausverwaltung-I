@@ -2,6 +2,7 @@ package dev.hausfix.rest.objects;
 
 import dev.hausfix.entities.User;
 import dev.hausfix.enumerators.EGender;
+import dev.hausfix.util.Hash;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public class UserJSONMapper {
         userJson.put("id", user.getId().toString());
         userJson.put("username", user.getUsername());
         userJson.put("email", user.getEmail());
-        userJson.put("password", user.getPassword());
+        userJson.put("password", Hash.hashPassword(user.getPassword()));
 
         mainJson.put("user", userJson);
 
@@ -28,7 +29,7 @@ public class UserJSONMapper {
 
         user.setUserame(json.get("username").toString());
         user.setPassword(json.get("password").toString());
-        user.setEmail(json.get("gender").toString());
+        user.setEmail(json.get("email").toString());
 
         if(json.has("id"))
             user.setId(UUID.fromString(json.get("id").toString()));

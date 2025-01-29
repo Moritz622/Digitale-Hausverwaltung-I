@@ -60,7 +60,7 @@ public class UserService extends Service implements IUserService {
         }
 
         try {
-            databaseConnection.getConnection().prepareStatement("INSERT INTO users (id,username,email,password) VALUES ('" + id + "','" + username + "','" + email + "'," + password + "');").executeQuery();
+            databaseConnection.getConnection().prepareStatement("INSERT INTO users (id,username,email,password) VALUES ('" + id + "','" + username + "','" + email + "','" + password + "');").executeQuery();
         } catch (SQLException e) {
             System.out.println("User konnte nicht hinzugefügt werden.");
             return false;
@@ -114,7 +114,7 @@ public class UserService extends Service implements IUserService {
                     "password = '" + password + "'" +
                     "WHERE id = '" + id + "'");
         } catch (SQLException e) {
-            throw new NoEntityFoundException("Es konnte kein Kunde mit der ID gefunden werden");
+            throw new NoEntityFoundException("Es konnte kein User mit der ID gefunden werden");
         }
     }
 
@@ -138,7 +138,7 @@ public class UserService extends Service implements IUserService {
 
             return users;
         } catch (SQLException e) {
-            System.out.println("Keine Kunden vorhanden");
+            System.out.println("Keine User vorhanden");
 
             return null;
         }
@@ -160,7 +160,17 @@ public class UserService extends Service implements IUserService {
 
             return user;
         } catch (SQLException e) {
-            throw new NoEntityFoundException("Es konnte kein Kunde mit der ID gefunden werden");
+            throw new NoEntityFoundException("Es konnte kein User mit der ID gefunden werden");
+        }
+    }
+
+    public boolean login(User user){
+        try {
+            ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM users WHERE username = '" + user.getUsername() + "' AND password = '" + user.getPassword() + "'").executeQuery();
+
+            return resultsSet.next();
+        } catch (SQLException e) {
+            return false;
         }
     }
 }
