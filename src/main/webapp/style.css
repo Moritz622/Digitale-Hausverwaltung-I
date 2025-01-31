@@ -46,6 +46,7 @@ background {
     flex-direction: column;
     vertical-align: middle;
     box-shadow: 0px 0px 50px 1px grey;
+    transition: 1s;
 }
 
 .center input {
@@ -105,7 +106,7 @@ background {
     }
 
 .formContainer {
-    animation: loginSuccessfull 2s ease 1;
+    animation: start 2s ease 1;
     margin: 0;
     position: absolute;
     top: 50%;
@@ -116,12 +117,58 @@ background {
     height: fit-content;
 }
 
-@keyframes loginSuccessfull {
+.loginFailed {
+    animation: loginFailed 1s 1;
+}
+
+    .loginFailed .centerForm {
+        box-shadow: 0px 0px 10px 1px red;
+        transition: 1s;
+    }
+
+.loginSuccessfull {
+    animation: loginSuccessfull 1s 1;
+}
+
+    .loginSuccessfull .centerForm {
+        box-shadow: 0px 0px 10px 1px lime;
+        transition: 1s;
+    }
+
+.rotate {
+    animation: 3s rotate infinite linear;
+}
+
+@keyframes start {
     from {
         transform: translate(-50%, -50%) rotate(0deg);
     }
 
     to {
         transform: translate(-50%, -50%) rotate(180deg);
+    }
+}
+
+@keyframes loginSuccessfull {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+
+    30% {
+        transform: translate(-50%, -50%) rotate(180deg) scale(0.1);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(180deg) scale(2);
+    }
+}
+
+@keyframes loginFailed {
+    from {
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(90deg);
     }
 }

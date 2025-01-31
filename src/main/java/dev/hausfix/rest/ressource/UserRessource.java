@@ -6,6 +6,7 @@ import dev.hausfix.exceptions.IncompleteDatasetException;
 import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.rest.objects.UserJSONMapper;
 import dev.hausfix.rest.schema.SchemaLoader;
+import dev.hausfix.rest.webtoken.JWTUtil;
 import dev.hausfix.services.UserService;
 import dev.hausfix.services.ReadingService;
 import dev.hausfix.sql.DatabaseConnection;
@@ -16,6 +17,7 @@ import jakarta.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.print.attribute.standard.Media;
 import java.util.UUID;
 
 @Path("rest/users")
@@ -150,6 +152,7 @@ public class UserRessource {
     @POST
     @Path("/login")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response login(String jsonString) {
         DatabaseConnection dbConnection = new DatabaseConnection();
         dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
@@ -160,12 +163,19 @@ public class UserRessource {
 
         User user = userJSONMapper.mapUser(new JSONObject(jsonString));
 
+        System.out.println(user.getUsername() + " " + user.getPassword());
+
         if (userService.login(user)){
-            return Response.status(200, "Ok").build();
+            System.out.println("ahhh");
+
+            String token = JWTUtil.generateToken(user.getId());
+
+            System.out.println(token);
+
+            return Response.status(200, "Ok").entity(new JSONObject().put("token", token).toString()).build();
         }
         else{
-            return Response.status(400, "not found").build();
+            return Response.status(400, "Not Authorized").build();
         }
-
     }
 }
