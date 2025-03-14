@@ -51,10 +51,46 @@ public class CustomerPageResource {
     }
 
     @POST
-    @Path("getallcustomers")
+    @Path("getcustomer")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     public Response getCustomer(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if(sessionUser == null){
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        String id = data.getString("customerid");
+
+        CustomerService customerService = new CustomerService(dbConnection);
+        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+        Customer customer;
+
+        try {
+            customer = customerService.getCustomer(UUID.fromString(id));
+
+            if(((User) customer.getUser()).getId().toString().matches(sessionUser.getId().toString())){
+                return Response.status(Response.Status.OK).entity(SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").toString()).build();
+            }else{
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        } catch (NoEntityFoundException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("No Entity Found").build();
+        }
+    }
+
+    @POST
+    @Path("getallcustomers")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response getAllCustomers(String jsonString) {
         DatabaseConnection dbConnection = new DatabaseConnection();
         dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
 
@@ -74,11 +110,7 @@ public class CustomerPageResource {
         ArrayList<Customer> userCustomers = new ArrayList<>();
 
         for(Customer customer : customers){
-            System.out.println(customer.getId());
-
             if(customer.getUser() != null){
-                System.out.println(((User) customer.getUser()).getId());
-
                 if(((User) customer.getUser()).getId().toString().matches(sessionUser.getId().toString())){
                     userCustomers.add(customer);
                 }
@@ -101,6 +133,7 @@ public class CustomerPageResource {
     @POST
     @Path("addcustomer")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response addCustomer(String jsonString) {
         DatabaseConnection dbConnection = new DatabaseConnection();
         dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
@@ -122,7 +155,7 @@ public class CustomerPageResource {
 
         try {
             if(customerService.addCustomer(customer)){
-                return Response.status(Response.Status.OK).build();
+                return Response.status(Response.Status.OK).entity(customerJSONMapper.mapCustomer(customerService.getCustomer(customer.getId())).toString()).build();
             }else{
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not add Customer").build();
             }
@@ -130,6 +163,8 @@ public class CustomerPageResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Incomplete dataset").build();
         } catch (DuplicateEntryException e) {
             return Response.status(Response.Status.CONFLICT).entity("Customer already exists").build();
+        } catch (NoEntityFoundException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not add Customer").build();
         }
     }
 
@@ -193,13 +228,19 @@ public class CustomerPageResource {
 
         Customer customer = customerJSONMapper.mapCustomer(data.getJSONObject("customer"));
 
+        customer.setUser(sessionUser);
+
         try {
             Customer temp = customerService.getCustomer(customer.getId());
 
             if(!((User)temp.getUser()).getId().equals(sessionUser.getId())){
+                System.out.println("Your session has expired");
+
                 return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
             }
         } catch (NoEntityFoundException e) {
+            System.out.println("Customer doesn't exist");
+
             return Response.status(Response.Status.BAD_REQUEST).entity("Customer doesn't exist").build();
         }
 
@@ -208,10 +249,16 @@ public class CustomerPageResource {
 
             return Response.status(Response.Status.OK).build();
         } catch (NoEntityFoundException e) {
+            System.out.println("Customer doesn't exist");
+
             return Response.status(Response.Status.BAD_REQUEST).entity("Customer doesn't exist").build();
         } catch (IncompleteDatasetException e) {
+            System.out.println("Incomplete dataset");
+
             return Response.status(Response.Status.BAD_REQUEST).entity("Incomplete dataset").build();
         } catch (DuplicateEntryException e) {
+            System.out.println("Cant use that name");
+
             return Response.status(Response.Status.BAD_REQUEST).entity("Cant use that name").build();
         }
     }
@@ -257,7 +304,7 @@ public class CustomerPageResource {
 
             ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
 
-            for(Reading reading : readings){
+            for(Reading reading : readings) {
                 readingJSON.put(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/ReadingJsonSchema.json").get("reading"));
             }
 

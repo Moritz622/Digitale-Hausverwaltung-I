@@ -3,12 +3,18 @@
 <head>
     <title>HausFix</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="entitypage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
+    <script src="pages/customerpage.js"></script>
+    <script src="api/customer.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
-<body>
+<body onload="loadCustomerpage()">
     <div class="sidebar">
         <h1>Hausfix</h1>
         <span>
@@ -34,29 +40,32 @@
     </div>
 
     <div class="page">
-        <div class="button saveButton" onclick="saveCustomer()"><i class="fa-solid fa-floppy-disk"></i></div>
-
-        <div class="inputContainer">
-            <label>Vorname</label>
-            <input type="text" id="name" placeholder="" />
-            <label>Nachname</label>
-            <input type="text" id="surname" placeholder="" />
-            <label>E-Mail</label>
-            <input type="email" id="email" placeholder="" />
-            <label>Geburtsdatum</label>
-            <input type="date" id="birthdate" placeholder="" />
-            <label>Geschlecht</label>
-            <select id="gender">
-                <option value="M">Männlich</option>
-                <option value="W">Weiblich</option>
-                <option value="D">Divers</option>
-                <option value="U">Unbekannt</option>
-            </select>
+        <div class="controls">
+            <div class="button saveButton" onclick="saveCustomer()"><i class="fa-solid fa-floppy-disk"></i></div>
+            <div class="button deleteButton" onclick="deleteCustomer()"><i class="fa-solid fa-trash-can"></i></div>
         </div>
+        <div class="data">
+            <div class="inputContainer">
+                <label>Vorname</label>
+                <input type="text" id="firstname" placeholder="" onchange="updateMissingData(this)" />
+                <label>Nachname</label>
+                <input type="text" id="lastname" placeholder="" onchange="updateMissingData(this)" />
+                <label>Geburtsdatum</label>
+                <input type="date" id="birthdate" placeholder="" onchange="updateMissingData(this)" />
+                <label>Geschlecht</label>
+                <select id="gender">
+                    <option value="M">Männlich</option>
+                    <option value="W">Weiblich</option>
+                    <option value="D">Divers</option>
+                    <option value="U">Unbekannt</option>
+                </select>
+            </div>
 
-        <div class="chart">
-            <iframe src="evaluation/readings.html"></iframe>
+            <div class="chart" id="curve_chart"></div>
         </div>
+    </div>
+    <div class="infobox" id="infobox">
+        Kunde wurde erfolgreich gespeichert
     </div>
 </body>
 </html>

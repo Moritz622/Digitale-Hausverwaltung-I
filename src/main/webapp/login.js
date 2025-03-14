@@ -59,7 +59,7 @@ async function loginSuccessfull() {
 
     await sleep(800);
 
-    window.location.assign("pages/customer/index.html", "_blank");
+    window.location.assign("homepage.html", "_blank");
 }
 
 function sleep(ms) {

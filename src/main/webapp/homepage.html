@@ -4,8 +4,10 @@
     <title>HausFix</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="api/customer.js"></script>
+    <script src="pages/homepage.js"></script>
 </head>
-<body>
+<body onload="loadHomepage()">
     <div class="sidebar">
         <h1>Hausfix</h1>
         <span>
@@ -33,7 +35,7 @@
     <div class="page containerpage">
         <a class="container userCount centered wobblecontainer" href="customers.html">
             <i class="fa-solid fa-users bigicon"></i>
-            <div>3</div>
+            <div id="customerCount">3</div>
         </a>
 
         <a class="container userCount centered wobblecontainer" href="readings.html">

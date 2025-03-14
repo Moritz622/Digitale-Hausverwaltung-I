@@ -4,8 +4,10 @@
     <title>HausFix</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="api/customer.js"></script>
+    <script src="pages/customersPage.js"></script>
 </head>
-<body>
+<body onload="loadCustomerspage()">
     <div class="sidebar">
         <h1>Hausfix</h1>
         <span>
@@ -33,17 +35,12 @@
     <div class="page">
         <a class="button addButton" href="customer.html"><i class="fa-solid fa-plus"></i></a>
 
-        <table class="table">
+        <table class="table" id="customerTable">
             <tr>
                 <th>Nachname</th>
                 <th>Vorname</th>
-                <th>Email</th>
                 <th>Geburtsdatum</th>
                 <th>Geschlecht</th>
-            </tr>
-            <tr>
-            </tr>
-            <tr>
             </tr>
         </table>
     </div>

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class Helper {
 
-    public final UUID customerUUID = UUID.fromString("f1f80d30-8197-403d-850c-b2ba3831a31c");
+    public final UUID customerUUID = UUID.fromString("13b53ae0-15c8-4273-80ac-2587699485b6");
     public final UUID readingUUID = UUID.fromString("478d3b24-0ba0-4901-b8cc-9002b9eb0da6");
 
     public Customer customer;

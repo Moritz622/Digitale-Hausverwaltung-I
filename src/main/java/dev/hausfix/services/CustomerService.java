@@ -34,7 +34,7 @@ public class CustomerService extends Service implements ICustomerService {
 
     @Override
     public boolean addCustomer(Customer customer) throws IncompleteDatasetException, DuplicateEntryException {
-        if(isNameUsed(customer)){
+        if(isNameUsed(customer, (User)customer.getUser())){
             throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit demselben Vor und Nachnamen vorhanden");
         }
 
@@ -102,13 +102,20 @@ public class CustomerService extends Service implements ICustomerService {
         }
     }
 
-    private boolean isNameUsed(Customer customer){
+    private boolean isNameUsed(Customer customer, User user){
         try {
             Statement stmt = databaseConnection.getConnection().createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers WHERE firstname = '" + customer.getFirstName() + "' AND lastname = '" + customer.getLastName() + "'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers WHERE firstname = '" + customer.getFirstName() + "' AND lastname = '" + customer.getLastName() + "' AND userid = '" + user.getId() + "'");
 
-            return rs.next();
+            if(!rs.next())
+                return false;
+
+            if(customer.getId().toString().matches(rs.getString("id"))){
+                return false;
+            }else{
+                return true;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -116,7 +123,7 @@ public class CustomerService extends Service implements ICustomerService {
 
     @Override
     public void updateCustomer(Customer customer) throws NoEntityFoundException, IncompleteDatasetException, DuplicateEntryException {
-        if(isNameUsed(customer)){
+        if(isNameUsed(customer, (User)customer.getUser())){
             throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit demselben Vor und Nachnamen vorhanden");
         }
 
