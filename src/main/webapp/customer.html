@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>HausFix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Hausfix</h1>
+        <span>
+            <i class="fa-solid fa-house icon"></i>
+            <a class="sidebartext" href="homepage.html">Home</a>
+        </span>
+        <span>
+            <i class="fa-solid fa-users icon"></i>
+            <a class="selectedPage sidebartext" href="customers.html">Kunden</a>
+        </span>
+        <span>
+            <i class="fa-solid fa-chart-pie icon"></i>
+            <a class="sidebartext" href="readings.html">Ablesedaten</a>
+        </span>
+        <span>
+            <i class="fa-solid fa-user icon"></i>
+            <a class="sidebartext" href="profile.html">Profil</a>
+        </span>
+    </div>
+
+    <div class="header">
+        Kunde
+    </div>
+
+    <div class="page">
+        <div class="button saveButton" onclick="saveCustomer()"><i class="fa-solid fa-floppy-disk"></i></div>
+
+        <div class="inputContainer">
+            <label>Vorname</label>
+            <input type="text" id="name" placeholder="" />
+            <label>Nachname</label>
+            <input type="text" id="surname" placeholder="" />
+            <label>E-Mail</label>
+            <input type="email" id="email" placeholder="" />
+            <label>Geburtsdatum</label>
+            <input type="date" id="birthdate" placeholder="" />
+            <label>Geschlecht</label>
+            <select id="gender">
+                <option value="M">Männlich</option>
+                <option value="W">Weiblich</option>
+                <option value="D">Divers</option>
+                <option value="U">Unbekannt</option>
+            </select>
+        </div>
+
+        <div class="chart">
+            <iframe src="evaluation/readings.html"></iframe>
+        </div>
+    </div>
+</body>
+</html>

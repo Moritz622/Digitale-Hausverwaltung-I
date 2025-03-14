@@ -1,0 +1,68 @@
+<style>
+    .container {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    a {
+        all: unset;
+        cursor: pointer;
+    }
+
+    .selectedPage {
+        color: #8075aa;
+    }
+
+    .icon {
+        background: #4776E6;
+        color: transparent;
+        background-clip: text;
+    }
+
+    h1 {
+        background: #4776E6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8E54E9, #4776E6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        color: transparent;
+        background-clip: text;
+        font-size: 4em;
+        text-align: center;
+    }
+
+    span {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        margin-left: 10px;
+    }
+
+    .sidebartext {
+        position: absolute;
+        left: 50px;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container">
+    <h1>Hausfix</h1>
+    <span>
+        <i class="fa-solid fa-house icon"></i>
+        <a class="sidebartext" href="homepage.html">Home</a>
+    </span>
+    <span>
+        <i class="fa-solid fa-users icon"></i>
+        <a class="selectedPage sidebartext" href="customer.html">Kunden</a>
+    </span>
+    <span>
+        <i class="fa-solid fa-chart-pie icon"></i>
+        <a class="sidebartext" href="readings.html">Ablesedaten</a>
+    </span>
+    <span>
+        <i class="fa-solid fa-user icon"></i>
+        <a class="sidebartext" href="profile.html">Profil</a>
+    </span>
+</div>

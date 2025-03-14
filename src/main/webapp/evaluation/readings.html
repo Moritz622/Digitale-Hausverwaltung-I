@@ -1,0 +1,28 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div id="curve_chart" style="width: 900px; height: 500px"></div>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Datum', 'Heizung', 'Stromg', 'Wasser', 'Unbekannt'],
+            ['13.02.2025', 40, 60, 55, 58],
+            ['14.02.2025', 60, 69, 65, 72],
+            ['15.02.2025', 35, 45, 60, 38],
+            ['16.02.2025', 55, 30, 46, 52]
+        ]);
+
+        var options = {
+            title: 'Ablesedaten',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+    }
+</script>
