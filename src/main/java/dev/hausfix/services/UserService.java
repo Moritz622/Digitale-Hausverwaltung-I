@@ -25,10 +25,6 @@ public class UserService extends Service implements IUserService {
         super(databaseConnection);
     }
 
-    public void setReadingService(ReadingService readingService){
-        this.readingService = readingService;
-    }
-
     @Override
     public boolean addUser(User user) throws IncompleteDatasetException, DuplicateEntryException {
         List<User> users = getAllUsers().stream().filter(item -> item.getUsername().equals(user.getUsername())).collect(Collectors.toList());
@@ -148,6 +144,25 @@ public class UserService extends Service implements IUserService {
     public User getUser(UUID id) throws NoEntityFoundException {
         try {
             ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM users WHERE id = '" + id + "'").executeQuery();
+
+            resultsSet.next();
+
+            User user = new User();
+
+            user.setId(UUID.fromString(resultsSet.getString("id")));
+            user.setUserame(resultsSet.getString("username"));
+            user.setEmail(resultsSet.getString("email"));
+            user.setPassword(resultsSet.getString("password"));
+
+            return user;
+        } catch (SQLException e) {
+            throw new NoEntityFoundException("Es konnte kein User mit der ID gefunden werden");
+        }
+    }
+
+    public User getUser(String username) throws NoEntityFoundException {
+        try {
+            ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM users WHERE username = '" + username + "'").executeQuery();
 
             resultsSet.next();
 

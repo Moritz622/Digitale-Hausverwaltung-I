@@ -163,19 +163,48 @@ public class UserRessource {
 
         User user = userJSONMapper.mapUser(new JSONObject(jsonString));
 
-        System.out.println(user.getUsername() + " " + user.getPassword());
-
         if (userService.login(user)){
-            System.out.println("ahhh");
+            try {
+                UUID userID = userService.getUser(user.getUsername()).getId();
 
-            String token = JWTUtil.generateToken(user.getId());
+                String token = JWTUtil.generateToken(userID);
 
-            System.out.println(token);
-
-            return Response.status(200, "Ok").entity(new JSONObject().put("token", token).toString()).build();
+                return Response.status(200, "Ok").entity(new JSONObject().put("token", token).toString()).build();
+            } catch (NoEntityFoundException e) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
         }
         else{
             return Response.status(400, "Not Authorized").build();
+        }
+    }
+
+    @POST
+    @Path("/isloggedin")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response isLoggedIn(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        UserService userService = new UserService(dbConnection);
+
+        UserJSONMapper userJSONMapper = new UserJSONMapper();
+
+        JSONObject data = new JSONObject(jsonString);
+
+        if(data.has("token")){
+            UUID uuid = JWTUtil.validateToken(data.getString("token"));
+
+            try {
+                userService.getUser(uuid);
+
+                return Response.status(Response.Status.OK).build();
+            } catch (NoEntityFoundException e) {
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        }else{
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 }

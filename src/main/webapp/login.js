@@ -1,3 +1,24 @@
+if (localStorage.getItem("token") != "") {
+    isLoggedIn();
+}
+
+function isLoggedIn() {
+    fetch("http://localhost:8069/rest/users/isloggedin", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem("token")
+        })
+    })
+        .then(response => {
+            if (response.status === 200) {
+                loginSuccessfull();
+            }
+        })
+}
+
 function login() {
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
@@ -36,9 +57,9 @@ async function loginFailed() {
 async function loginSuccessfull() {
     document.getElementsByClassName("formContainer")[0].classList.add("loginSuccessfull");
 
-    await sleep(1000);
+    await sleep(800);
 
-    document.getElementsByClassName("formContainer")[0].classList.add("rotate");
+    window.location.assign("pages/customer/index.html", "_blank");
 }
 
 function sleep(ms) {

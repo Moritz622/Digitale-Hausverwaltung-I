@@ -14,6 +14,7 @@ import dev.hausfix.util.PropertyLoader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,9 +34,7 @@ public class CustomerService extends Service implements ICustomerService {
 
     @Override
     public boolean addCustomer(Customer customer) throws IncompleteDatasetException, DuplicateEntryException {
-        List<Customer> customers = getAllCustomers().stream().filter(item -> item.getFirstName().equals(customer.getFirstName()) & item.getLastName().equals(customer.getLastName())).collect(Collectors.toList());
-
-        if(!customers.isEmpty()){
+        if(isNameUsed(customer)){
             throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit demselben Vor und Nachnamen vorhanden");
         }
 
@@ -88,7 +87,9 @@ public class CustomerService extends Service implements ICustomerService {
         try {
             Statement stmt = databaseConnection.getConnection().createStatement();
 
-            List<Reading> readingsOfCustomer = readingService.getAllReadings().stream().filter(item -> ((Customer)item.getCustomer()).getId().equals(customer.getId())).collect(Collectors.toUnmodifiableList());
+            System.out.println(readingService);
+
+            List<Reading> readingsOfCustomer = readingService.getReadingsByCriteria(customer.getId(), LocalDate.MIN, LocalDate.MAX, null);
 
             for(Reading reading : readingsOfCustomer){
                 reading.setCustomer(null);
@@ -101,11 +102,21 @@ public class CustomerService extends Service implements ICustomerService {
         }
     }
 
+    private boolean isNameUsed(Customer customer){
+        try {
+            Statement stmt = databaseConnection.getConnection().createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers WHERE firstname = '" + customer.getFirstName() + "' AND lastname = '" + customer.getLastName() + "'");
+
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void updateCustomer(Customer customer) throws NoEntityFoundException, IncompleteDatasetException, DuplicateEntryException {
-        List<Customer> customers = getAllCustomers().stream().filter(item -> item.getFirstName().equals(customer.getFirstName()) & item.getLastName().equals(customer.getLastName())).collect(Collectors.toList());
-
-        if(!customers.isEmpty()){
+        if(isNameUsed(customer)){
             throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit demselben Vor und Nachnamen vorhanden");
         }
 

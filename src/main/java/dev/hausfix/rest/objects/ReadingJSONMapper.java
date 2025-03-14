@@ -53,6 +53,7 @@ public class ReadingJSONMapper {
         } catch (NoEntityFoundException e) {
             throw new RuntimeException(e);
         }
+
         reading.setDateOfReading(LocalDate.parse(json.get("dateOfReading").toString()));
         reading.setKindOfMeter(EKindOfMeter.valueOf(json.get("kindOfMeter").toString()));
         reading.setMeterCount(Double.parseDouble(json.get("meterCount").toString()));
