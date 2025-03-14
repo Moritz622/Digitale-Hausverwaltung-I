@@ -5,6 +5,7 @@ import dev.hausfix.entities.User;
 import dev.hausfix.enumerators.EGender;
 import dev.hausfix.exceptions.NoEntityFoundException;
 import dev.hausfix.rest.schema.SchemaLoader;
+import dev.hausfix.services.ReadingService;
 import dev.hausfix.services.UserService;
 import dev.hausfix.sql.DatabaseConnection;
 import dev.hausfix.util.PropertyLoader;
@@ -48,6 +49,7 @@ public class CustomerJSONMapper {
         dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
 
         UserService userService = new UserService(dbConnection);
+        ReadingService readingService = new ReadingService(dbConnection);
 
         try{
             if(json.has("user")){
@@ -56,6 +58,8 @@ public class CustomerJSONMapper {
                 }else{
                     customer.setUser(null);
                 }
+            }else{
+                customer.setUser(null);
             }
         }catch(NoEntityFoundException e){
             customer.setUser(null);
@@ -64,7 +68,6 @@ public class CustomerJSONMapper {
         if(json.has("id")){
             customer.setId(UUID.fromString(json.get("id").toString()));
         }
-
 
         return customer;
     }

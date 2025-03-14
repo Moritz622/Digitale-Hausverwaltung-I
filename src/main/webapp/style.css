@@ -127,7 +127,7 @@ background {
     }
 
 .loginSuccessfull {
-    animation: loginSuccessfull 1s 1;
+    animation: loginSuccessfull 1s 1 ease-out;
 }
 
     .loginSuccessfull .centerForm {
@@ -152,10 +152,6 @@ background {
 @keyframes loginSuccessfull {
     0% {
         transform: translate(-50%, -50%) rotate(0deg) scale(1);
-    }
-
-    30% {
-        transform: translate(-50%, -50%) rotate(180deg) scale(0.1);
     }
 
     100% {
