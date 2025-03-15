@@ -47,6 +47,8 @@ async function saveCustomer() {
         url.searchParams.set("id", newCustomer.id);
 
         window.history.pushState({}, '', url);
+
+        loadCustomerpage();
     }
 }
 
@@ -75,7 +77,7 @@ async function loadCustomerpage() {
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);
 
-        const result = [['Datum', 'Heizung', 'Strom', 'Wasser', 'Unbekannt']];
+        const result = [["Datum", "Heizung", "Strom", "Wasser", "Unbekannt"]];
 
         const dataMap = new Map();
 
@@ -95,16 +97,20 @@ async function loadCustomerpage() {
             }
 
             const currentData = dataMap.get(datum);
-            if (typ === "Heizung") {
+            if (typ === "HEIZUNG") {
                 currentData.heizung = wert;
-            } else if (typ === "Strom") {
+            } else if (typ === "STROM") {
                 currentData.strom = wert;
-            } else if (typ === "Wasser") {
+            } else if (typ === "WASSER") {
                 currentData.wasser = wert;
             } else {
                 currentData.unbekannt = wert;
             }
         });
+
+        if (dataMap.size == 0) {
+            result.push(["Keine Daten vorhanden", 0, 0, 0, 0]);
+        }
 
         // Konvertiere die Map in das gewünschte Format
         dataMap.forEach((value, datum) => {
@@ -114,9 +120,7 @@ async function loadCustomerpage() {
         console.log(result);
 
         function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                result
-            ]);
+            var data = google.visualization.arrayToDataTable(result);
 
             var options = {
                 title: 'Ablesedaten',

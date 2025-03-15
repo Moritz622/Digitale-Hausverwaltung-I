@@ -1,0 +1,71 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>HausFix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="entitypage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
+    <script src="pages/readingpage.js"></script>
+    <script src="api/reading.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body onload="loadReadingpage()">
+    <div class="sidebar">
+        <h1>Hausfix</h1>
+        <span>
+            <i class="fa-solid fa-house icon"></i>
+            <a class="sidebartext" href="homepage.html">Home</a>
+        </span>
+        <span>
+            <i class="fa-solid fa-users icon"></i>
+            <a class="selectedPage sidebartext" href="customers.html">Kunden</a>
+        </span>
+        <span>
+            <i class="fa-solid fa-chart-pie icon"></i>
+            <a class="sidebartext" href="readings.html">Ablesedaten</a>
+        </span>
+        <span>
+            <i class="fa-solid fa-user icon"></i>
+            <a class="sidebartext" href="profile.html">Profil</a>
+        </span>
+    </div>
+
+    <div class="header">
+        Ablesedaten
+    </div>
+
+    <div class="page">
+        <div class="controls">
+            <div class="button saveButton" onclick="saveReading()"><i class="fa-solid fa-floppy-disk"></i></div>
+            <div class="button deleteButton" onclick="deleteReading()"><i class="fa-solid fa-trash-can"></i></div>
+        </div>
+        <div class="data">
+            <div class="inputContainer">
+                <label>Vorname</label>
+                <input type="text" id="firstname" placeholder="" onchange="updateMissingData(this)" />
+                <label>Nachname</label>
+                <input type="text" id="lastname" placeholder="" onchange="updateMissingData(this)" />
+                <label>Geburtsdatum</label>
+                <input type="date" id="birthdate" placeholder="" onchange="updateMissingData(this)" />
+                <label>Geschlecht</label>
+                <select id="gender">
+                    <option value="M">Männlich</option>
+                    <option value="W">Weiblich</option>
+                    <option value="D">Divers</option>
+                    <option value="U">Unbekannt</option>
+                </select>
+            </div>
+
+            <div class="chart" id="curve_chart"></div>
+        </div>
+    </div>
+    <div class="infobox" id="infobox">
+        Kunde wurde erfolgreich gespeichert
+    </div>
+</body>
+</html>

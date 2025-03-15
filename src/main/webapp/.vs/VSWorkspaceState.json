@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\evaluation"
+    "\\api",
+    "\\evaluation",
+    "\\fonts",
+    "\\pages"
   ],
-  "SelectedNode": "\\style.css",
+  "SelectedNode": "\\reading.html",
   "PreviewInSolutionExplorer": false
 }

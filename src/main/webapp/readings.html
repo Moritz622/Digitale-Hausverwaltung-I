@@ -2,11 +2,12 @@
 <html>
 <head>
     <title>HausFix</title>
-    <script src="readings.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="api/reading.js"></script>
+    <script src="pages/readingsPage.js"></script>
 </head>
-<body>
+<body onload="loadReadingsspage()">
     <div class="sidebar">
         <h1>Hausfix</h1>
         <span>
@@ -15,11 +16,11 @@
         </span>
         <span>
             <i class="fa-solid fa-users icon"></i>
-            <a class="sidebartext" href="customers.html">Kunden</a>
+            <a class="selectedPage sidebartext">Kunden</a>
         </span>
         <span>
             <i class="fa-solid fa-chart-pie icon"></i>
-            <a class="selectedPage sidebartext">Ablesedaten</a>
+            <a class="sidebartext" href="readings.html">Ablesedaten</a>
         </span>
         <span>
             <i class="fa-solid fa-user icon"></i>
@@ -32,61 +33,17 @@
     </div>
 
     <div class="page">
-        <div class="button addButton" onclick="addReading()"><i class="fa-solid fa-plus"></i></div>
-        <div class="button" onclick="showReadingImportPopup()">Import</div>
+        <a class="button addButton" href="reading.html"><i class="fa-solid fa-plus"></i></a>
 
-        <table class="table">
+        <table class="table" id="customerTable">
             <tr>
-                <th>Wert</th>
-                <th>Typ</th>
                 <th>Datum</th>
+                <th>Messstand</th>
+                <th>Typ</th>
                 <th>Kommentar</th>
-                <th>Substitute</th>
-            </tr>
-            <tr>
-            </tr>
-            <tr>
+                <th>Kunde</th>
             </tr>
         </table>
-    </div>
-
-    <div class="popup" id="readingImportPopup">
-        <style>
-            .container {
-                font-size: 18px;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                margin-left: 15px;
-            }
-
-            .button {
-                float: none;
-                font-size: 18px;
-                right: 0px;
-                margin: 8px;
-                float: right;
-            }
-
-            .footer {
-                display: flex;
-                flex-direction: row;
-                position: relative;
-                float: right;
-                justify-content: space-between;
-            }
-        </style>
-
-        <div class="container">
-            <h1>Import</h1>
-            <input type="file" placeholder="Datei Auswählen" dropzone="true" />
-            <div class="footer">
-                <button class="button">Import Datei Herunterladen</button>
-                <button class="button">Import Starten</button>
-                <button class="button cancelButton" onclick="closeReadingImportPopup()">Abbrechen</button>
-            </div>
-        </div>
     </div>
 </body>
 </html>

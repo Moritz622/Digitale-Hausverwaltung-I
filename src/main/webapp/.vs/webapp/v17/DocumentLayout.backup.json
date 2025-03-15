@@ -1,34 +1,85 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\",
+  "WorkspaceRootPath": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\customerpage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pages\\customerpage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\homepage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:homepage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\customer.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\customer.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:customer.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\api\\customer.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:api\\customer.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\evaluation\\readings.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:evaluation\\readings.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\entitypage.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:entitypage.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\readings.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:readings.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\importreadings.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:importreadings.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\customerspage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pages\\customerspage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\customers.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:customers.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\register.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:register.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\homepage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pages\\homepage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\register.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\homepage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:homepage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\evaluation\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\readings.js||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:readings.js||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\register.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:register.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\profile.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:profile.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\navmenu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:navmenu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\register.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:register.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +89,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,91 +101,260 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "customer.html",
-              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\customer.html",
-              "RelativeDocumentMoniker": "customer.html",
-              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\customer.html",
-              "RelativeToolTip": "customer.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-03-10T10:34:23.876Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "homepage.html",
-              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\homepage.html",
-              "RelativeDocumentMoniker": "homepage.html",
-              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\homepage.html",
-              "RelativeToolTip": "homepage.html",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAADEAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-03-10T07:53:47.138Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "login.js",
-              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\login.js",
-              "RelativeDocumentMoniker": "login.js",
-              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\login.js",
-              "RelativeToolTip": "login.js",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwCgAAABNAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-29T07:37:15.186Z",
+              "Title": "entitypage.css",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\entitypage.css",
+              "RelativeDocumentMoniker": "entitypage.css",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\entitypage.css",
+              "RelativeToolTip": "entitypage.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-03-14T11:23:47.599Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "customerpage.js",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\customerpage.js",
+              "RelativeDocumentMoniker": "pages\\customerpage.js",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\customerpage.js",
+              "RelativeToolTip": "pages\\customerpage.js",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAHIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-03-14T08:15:55.586Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "customers.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\customers.html",
+              "RelativeDocumentMoniker": "customers.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\customers.html",
+              "RelativeToolTip": "customers.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-14T07:24:33.166Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "customerspage.js",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\customerspage.js",
+              "RelativeDocumentMoniker": "pages\\customerspage.js",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\customerspage.js",
+              "RelativeToolTip": "pages\\customerspage.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-03-14T07:19:21.945Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "customer.js",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\api\\customer.js",
+              "RelativeDocumentMoniker": "api\\customer.js",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\api\\customer.js",
+              "RelativeToolTip": "api\\customer.js",
+              "ViewState": "AgIAAMkAAAAAAAAAAAAmwOAAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-03-14T07:01:40.105Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "customer.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\customer.html",
+              "RelativeDocumentMoniker": "customer.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\customer.html",
+              "RelativeToolTip": "customer.html",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA4AAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-12T08:13:09.91Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "style.css",
-              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\style.css",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\style.css",
               "RelativeDocumentMoniker": "style.css",
-              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\style.css",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\style.css",
               "RelativeToolTip": "style.css",
-              "ViewState": "AgIAANcAAAAAAAAAAAAiwO4AAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAIsBAAAAAAAAAAAAwKUBAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2025-01-28T12:38:38.812Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "register.js",
-              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\register.js",
-              "RelativeDocumentMoniker": "register.js",
-              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\register.js",
-              "RelativeToolTip": "register.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-28T16:38:51.703Z"
+              "DocumentIndex": 7,
+              "Title": "importreadings.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\importreadings.html",
+              "RelativeDocumentMoniker": "importreadings.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\importreadings.html",
+              "RelativeToolTip": "importreadings.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-12T16:04:33.089Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "register.html",
-              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\register.html",
-              "RelativeDocumentMoniker": "register.html",
-              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\register.html",
-              "RelativeToolTip": "register.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABTAAAAAAAAAA==",
+              "Title": "readings.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\readings.html",
+              "RelativeDocumentMoniker": "readings.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\readings.html",
+              "RelativeToolTip": "readings.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-01-28T12:39:24.802Z"
+              "WhenOpened": "2025-03-12T07:41:46.954Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "readings.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\evaluation\\readings.html",
+              "RelativeDocumentMoniker": "evaluation\\readings.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\evaluation\\readings.html",
+              "RelativeToolTip": "evaluation\\readings.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-13T11:55:39.169Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "login.js",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\login.js",
+              "RelativeDocumentMoniker": "login.js",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\login.js",
+              "RelativeToolTip": "login.js",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwEAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-01-29T07:37:15.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "homepage.js",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\homepage.js",
+              "RelativeDocumentMoniker": "pages\\homepage.js",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\pages\\homepage.js",
+              "RelativeToolTip": "pages\\homepage.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-03-14T07:03:33.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "homepage.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\homepage.html",
+              "RelativeDocumentMoniker": "homepage.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\homepage.html",
+              "RelativeToolTip": "homepage.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-14T07:24:26.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "profile.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\profile.html",
+              "RelativeDocumentMoniker": "profile.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\profile.html",
+              "RelativeToolTip": "profile.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-12T07:45:06.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "navmenu.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\navmenu.html",
+              "RelativeDocumentMoniker": "navmenu.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\navmenu.html",
+              "RelativeToolTip": "navmenu.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-12T08:02:13.654Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "index.html",
-              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\index.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\index.html",
               "RelativeDocumentMoniker": "index.html",
-              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\index.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\index.html",
               "RelativeToolTip": "index.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-01-28T12:37:54.839Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "readings.js",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\readings.js",
+              "RelativeDocumentMoniker": "readings.js",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\readings.js",
+              "RelativeToolTip": "readings.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-03-12T16:16:27.258Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "style.css",
+              "DocumentMoniker": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\evaluation\\style.css",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\evaluation\\style.css",
+              "ToolTip": "C:\\Users\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\evaluation\\style.css",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\moritz.henneke\\eclipse-workspace\\REST_API\\src\\main\\webapp\\evaluation\\style.css",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-03-13T12:05:08.533Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "register.js",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\register.js",
+              "RelativeDocumentMoniker": "register.js",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\register.js",
+              "RelativeToolTip": "register.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-01-28T16:38:51.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "register.html",
+              "DocumentMoniker": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\register.html",
+              "RelativeDocumentMoniker": "register.html",
+              "ToolTip": "C:\\Users\\morit\\OneDrive\\Dokumente\\Digitale-Hausverwaltung-I\\src\\main\\webapp\\register.html",
+              "RelativeToolTip": "register.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-01-28T12:39:24.802Z",
               "EditorCaption": ""
             },
             {
