@@ -23,11 +23,11 @@
         </span>
         <span>
             <i class="fa-solid fa-users icon"></i>
-            <a class="selectedPage sidebartext" href="customers.html">Kunden</a>
+            <a class="sidebartext" href="customers.html">Kunden</a>
         </span>
         <span>
             <i class="fa-solid fa-chart-pie icon"></i>
-            <a class="sidebartext" href="readings.html">Ablesedaten</a>
+            <a class="sidebartext selectedPage" href="readings.html">Ablesedaten</a>
         </span>
         <span>
             <i class="fa-solid fa-user icon"></i>
@@ -46,19 +46,16 @@
         </div>
         <div class="data">
             <div class="inputContainer">
-                <label>Vorname</label>
-                <input type="text" id="firstname" placeholder="" onchange="updateMissingData(this)" />
-                <label>Nachname</label>
-                <input type="text" id="lastname" placeholder="" onchange="updateMissingData(this)" />
-                <label>Geburtsdatum</label>
-                <input type="date" id="birthdate" placeholder="" onchange="updateMissingData(this)" />
-                <label>Geschlecht</label>
-                <select id="gender">
-                    <option value="M">Männlich</option>
-                    <option value="W">Weiblich</option>
-                    <option value="D">Divers</option>
-                    <option value="U">Unbekannt</option>
-                </select>
+                <label>Wert</label>
+                <input type="text" id="readingValue" placeholder="" onchange="updateMissingData(this)" />
+                <label>Typ</label>
+                <input type="text" id="typ" placeholder="" onchange="updateMissingData(this)" />
+                <label>Datum</label>
+                <input type="date" id="date" placeholder="" onchange="updateMissingData(this)" />
+                <label>Kommentar</label>
+                <input type="text" id="comment" placeholder="" onchange="updateMissingData(this)" />
+                <label>Substitute</label>
+                <input type="checkbox" id="substitute" class="checkbox" />
             </div>
 
             <div class="chart" id="curve_chart"></div>

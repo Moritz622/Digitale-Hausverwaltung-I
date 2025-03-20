@@ -65,7 +65,7 @@ background {
     font-size: 20px;
     margin-top: 40px;
     background-color: transparent;
-    color: white;
+    color: black;
 }
 
     .center input:focus {
@@ -174,7 +174,7 @@ background {
         position: relative;
         width: fit-content;
         height: fit-content;
-        box-shadow: 0px 0px 12px 1px gray;
+        box-shadow: 0px 0px 4px 1px gray;
         background-color: white;
         margin: 15px;
         font-size: 2em;
@@ -183,7 +183,7 @@ background {
     }
 
     .page .wobblecontainer:hover {
-        box-shadow: 0px 0px 12px 1px #8075aa;
+        box-shadow: 0px 0px 0px 2px #8075aa;
         transition: 0.5s;
         animation: wiggle 1 0.3s;
     }
@@ -199,6 +199,10 @@ background {
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
+    }
+
+    .page .content {
+        margin: 20px;
     }
 
 .bigicon {
@@ -262,6 +266,11 @@ background {
     width: 32px;
     height: 32px;
     background: linear-gradient(to left, #e95454, #e64769);
+}
+
+.checkbox {
+    width: 32px;
+    height: 32px;
 }
 
 .popup {
@@ -330,6 +339,10 @@ background {
         cursor: pointer;
     }
 
+    .table tr:not(:first-child):hover {
+        text-decoration: underline black solid 1px;
+    }
+
 .header {
     position: absolute;
     top: 0px;
@@ -370,29 +383,66 @@ background {
 
         color: transparent;
         background-clip: text;
-        font-size: 4em;
+        font-size: 4vw;
         text-align: center;
     }
 
     .sidebar span {
-        font-size: 1.8em;
+        font-size: 2vw;
         margin-bottom: 15px;
         margin-left: 10px;
+        transition: 0.2s;
     }
+
+        .sidebar span:hover .icon {
+            color: #6f54e9; /* fallback for old browsers */
+            
+            transition: 0.4s;
+        }
+
+        .sidebar span:hover .sidebartext {
+            font-size: 2.1vw;
+            transition: 0.2s;
+        }
 
     .sidebar .sidebartext {
         position: absolute;
         left: 50px;
+        margin-left: 8px;
+        transition: 0.2s;
     }
 
     .sidebar a:hover {
-        text-decoration: underline;
+        
     }
 
+
+
+@media (max-width: 1000px) {
+    .sidebar {
+        width: fit-content;
+    }
+
+        .sidebar .sidebartext {
+            display: none;
+        }
+
+        .sidebar h1 {
+            display: none;
+        }
+
+    .page {
+        left: 64px;
+    }
+
+    .header {
+        left: 64px;
+    }
+}
+
 .icon {
-    background: #4776E6;
-    color: transparent;
-    background-clip: text;
+    color: #4776E6;
+    transition: 0.2s;
 }
 
 a {
@@ -406,15 +456,21 @@ a {
 
 input {
     font-size: 24px;
+    outline: none;
 }
 
+    input:focus:not(.checkbox) {
+        box-shadow: 1px 1px 1px 1px #4776E6;
+    }
+
 .missingData {
-    box-shadow: 0px 0px 5px 2px #e95454;
+    box-shadow: 0px 0px 1px 1px #e95454;
 }
 
 select {
     font-size: 24px;
     padding: 2px;
+    outline: none;
 }
 
 .inputContainer {
@@ -434,15 +490,18 @@ select {
     }
 
     .inputContainer input, select {
-        width: fit-content;
-        min-width: 200px;
         border-radius: 8px;
         border: 1px #8075aa solid;
         transition: 0.2s;
         user-select: none;
+        padding: 2px;
     }
 
-        .inputContainer input:hover, select:hover {
+    .inputContainer select {
+        width: fit-content;
+    }
+
+        .inputContainer input:hover:not(.checkbox) select:hover {
             box-shadow: 1px 1px 1px 1px #4776E6;
             transition: 0.2s;
         }
@@ -469,6 +528,40 @@ select {
     display: unset;
     animation: infoboxShow 3s linear forwards 1;
 }
+
+.changePasswordForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.changePasswordForm label {
+    margin-top: 10px;
+}
+
+    .changePasswordForm button {
+        border-radius: 8px;
+        background: #4776E6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8E54E9, #4776E6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        width: fit-content;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 5px;
+        position: relative;
+        cursor: pointer;
+        transition: 0.2s;
+        z-index: 100;
+        color: white;
+        min-height: 32px;
+        font-size: 20px;
+        user-select: none;
+    }
 
 @keyframes infoboxShow {
     from {
@@ -522,15 +615,15 @@ select {
     }
 
     25% {
-        rotate: -1deg;
+        rotate: -0.5deg;
     }
 
     50% {
-        rotate: 1deg;
+        rotate: 0.5deg;
     }
 
     75% {
-        rotate: -1deg;
+        rotate: -0.5deg;
     }
 
     100% {

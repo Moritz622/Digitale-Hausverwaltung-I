@@ -4,6 +4,8 @@
     <title>HausFix</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="profile.js"></script>
+    <script src="api/user.js"></script>
 </head>
 <body>
     <div class="sidebar">
@@ -31,7 +33,21 @@
     </div>
 
     <div class="page">
-        
+        <button class="button" onclick="logout()">Abmelden</button>
+
+        <div class="content inputContainer">
+            <div class="changePasswordForm">
+                <label>Passwort</label>
+                <input type="password" id="password1" onchange="updateMissingData(this)" />
+                <label>Passwort Wiederholen</label>
+                <input type="password" id="password2" onchange="updateMissingData(this)" />
+                <br />
+                <button onclick="changePassword()">Passwort ändern</button>
+            </div>
+        </div>
+    </div>
+    <div class="infobox" id="infobox">
+        Passwort erfolgreich geändert
     </div>
 </body>
 </html>

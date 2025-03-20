@@ -358,4 +358,37 @@ public class CustomerPageResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @POST
+    @Path("changepassword")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response changePassword(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if(sessionUser == null){
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        UserService userService = new UserService(dbConnection);
+
+        String newPassword = data.getString("password");
+
+        sessionUser.setPassword(newPassword);
+
+        try {
+            userService.updateUser(sessionUser);
+
+            return Response.status(Response.Status.OK).build();
+        } catch (NoEntityFoundException | DuplicateEntryException | IncompleteDatasetException e) {
+            System.out.println(e.getMessage());
+
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
 }

@@ -78,7 +78,7 @@ public class UserService extends Service implements IUserService {
 
     @Override
     public void updateUser(User user) throws NoEntityFoundException, IncompleteDatasetException, DuplicateEntryException {
-        List<User> users = getAllUsers().stream().filter(item -> item.getUsername().equals(user.getUsername())).collect(Collectors.toList());
+        List<User> users = getAllUsers().stream().filter(item -> item.getUsername().equals(user.getUsername()) & !item.getId().equals(user.getId())).collect(Collectors.toList());
 
         if(!users.isEmpty()){
             throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit demselben Vor und Nachnamen vorhanden");
