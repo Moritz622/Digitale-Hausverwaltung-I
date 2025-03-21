@@ -154,11 +154,11 @@ public class ReadingService extends Service implements IReadingService {
     }
 
     @Override
-    public List<Reading> getAllReadings() {
+    public ArrayList<Reading> getAllReadings() {
         try {
             ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM readings").executeQuery();
 
-            List<Reading> readings = new ArrayList<Reading>();
+            ArrayList<Reading> readings = new ArrayList<Reading>();
 
             while(resultsSet.next()){
                 Reading reading = new Reading();
