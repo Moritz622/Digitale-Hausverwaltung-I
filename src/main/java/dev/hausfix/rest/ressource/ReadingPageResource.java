@@ -53,10 +53,10 @@ public class ReadingPageResource {
     }
 
     @POST
-    @Path("getcustomer")
+    @Path("getreading")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response getCustomer(String jsonString) {
+    public Response getReading(String jsonString) {
         DatabaseConnection dbConnection = new DatabaseConnection();
         dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
 
@@ -68,18 +68,18 @@ public class ReadingPageResource {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
         }
 
-        String id = data.getString("customerid");
+        String id = data.getString("readingid");
 
-        CustomerService customerService = new CustomerService(dbConnection);
-        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+        ReadingService readingService = new ReadingService(dbConnection);
+        ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
 
-        Customer customer;
+        Reading reading;
 
         try {
-            customer = customerService.getCustomer(UUID.fromString(id));
+            reading = readingService.getReading(UUID.fromString(id));
 
-            if(((User) customer.getUser()).getId().toString().matches(sessionUser.getId().toString())){
-                return Response.status(Response.Status.OK).entity(SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").toString()).build();
+            if(((User) reading.getCustomer().getUser()).getId().toString().matches(sessionUser.getId().toString())){
+                return Response.status(Response.Status.OK).entity(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/CustomerJsonSchema.json").toString()).build();
             }else{
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
@@ -134,192 +134,6 @@ public class ReadingPageResource {
     }
 
     @POST
-    @Path("addcustomer")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response addCustomer(String jsonString) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
-
-        JSONObject data = new JSONObject(jsonString);
-
-        User sessionUser = checkSession(data, dbConnection);
-
-        if(sessionUser == null){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-        }
-
-        CustomerService customerService = new CustomerService(dbConnection);
-        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
-
-        Customer customer = customerJSONMapper.mapCustomer(data.getJSONObject("customer"));
-
-        customer.setUser(sessionUser);
-
-        try {
-            if(customerService.addCustomer(customer)){
-                return Response.status(Response.Status.OK).entity(customerJSONMapper.mapCustomer(customerService.getCustomer(customer.getId())).toString()).build();
-            }else{
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not add Customer").build();
-            }
-        } catch (IncompleteDatasetException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Incomplete dataset").build();
-        } catch (DuplicateEntryException e) {
-            return Response.status(Response.Status.CONFLICT).entity("Customer already exists").build();
-        } catch (NoEntityFoundException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not add Customer").build();
-        }
-    }
-
-    @POST
-    @Path("removecustomer")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response removeCustomer(String jsonString) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
-
-        JSONObject data = new JSONObject(jsonString);
-
-        User sessionUser = checkSession(data, dbConnection);
-
-        if(sessionUser == null){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-        }
-
-        UserService userService = new UserService(dbConnection);
-        CustomerService customerService = new CustomerService(dbConnection);
-        ReadingService readingService = new ReadingService(dbConnection);
-        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
-
-        customerService.setReadingService(readingService);
-        readingService.setCustomerService(customerService);
-
-        Customer customer = null;
-
-        try {
-            customer = customerService.getCustomer(UUID.fromString(data.get("customerid").toString()));
-
-            if(((User)customer.getUser()).getId().equals(sessionUser.getId())){
-                customerService.removeCustomer(customer);
-            }else{
-                return Response.status(Response.Status.UNAUTHORIZED).entity("Not your Customer").build();
-            }
-
-            return Response.status(Response.Status.OK).build();
-        } catch (NoEntityFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Customer does not exists").build();
-        }
-    }
-
-    @POST
-    @Path("putcustomer")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response putCustomer(String jsonString) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
-
-        JSONObject data = new JSONObject(jsonString);
-
-        User sessionUser = checkSession(data, dbConnection);
-
-        if(sessionUser == null){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-        }
-
-        CustomerService customerService = new CustomerService(dbConnection);
-        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
-
-        Customer customer = customerJSONMapper.mapCustomer(data.getJSONObject("customer"));
-
-        customer.setUser(sessionUser);
-
-        try {
-            Customer temp = customerService.getCustomer(customer.getId());
-
-            if(!((User)temp.getUser()).getId().equals(sessionUser.getId())){
-                System.out.println("Your session has expired");
-
-                return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-            }
-        } catch (NoEntityFoundException e) {
-            System.out.println("Customer doesn't exist");
-
-            return Response.status(Response.Status.BAD_REQUEST).entity("Customer doesn't exist").build();
-        }
-
-        try {
-            customerService.updateCustomer(customer);
-
-            return Response.status(Response.Status.OK).build();
-        } catch (NoEntityFoundException e) {
-            System.out.println("Customer doesn't exist");
-
-            return Response.status(Response.Status.BAD_REQUEST).entity("Customer doesn't exist").build();
-        } catch (IncompleteDatasetException e) {
-            System.out.println("Incomplete dataset");
-
-            return Response.status(Response.Status.BAD_REQUEST).entity("Incomplete dataset").build();
-        } catch (DuplicateEntryException e) {
-            System.out.println("Cant use that name");
-
-            return Response.status(Response.Status.BAD_REQUEST).entity("Cant use that name").build();
-        }
-    }
-
-    @POST
-    @Path("getcustomerreadings")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getCustomerReadings(String jsonString) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
-
-        JSONObject data = new JSONObject(jsonString);
-
-        User sessionUser = checkSession(data, dbConnection);
-
-        if(sessionUser == null){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-        }
-
-        CustomerService customerService = new CustomerService(dbConnection);
-        ReadingService readingService = new ReadingService(dbConnection);
-        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
-
-        customerService.setReadingService(readingService);
-        readingService.setCustomerService(customerService);
-
-        try {
-            Customer temp = customerService.getCustomer(UUID.fromString(data.get("customerid").toString()));
-
-            if(!((User)temp.getUser()).getId().equals(sessionUser.getId())){
-                return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-            }
-        } catch (NoEntityFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Customer doesn't exist").build();
-        }
-
-        try {
-            List<Reading> readings = readingService.getReadingsByCriteria(UUID.fromString(data.getString("customerid")), LocalDate.parse(data.getString("startdate")), LocalDate.parse(data.getString("enddate")), EKindOfMeter.valueOf(data.getString("type")));
-
-            JSONObject main = new JSONObject();
-
-            JSONArray readingJSON = new JSONArray();
-
-            ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
-
-            for(Reading reading : readings) {
-                readingJSON.put(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/ReadingJsonSchema.json").get("reading"));
-            }
-
-            main.put("readings", readingJSON);
-
-            return Response.status(Response.Status.OK).entity(SchemaLoader.load(main, "schema/ReadingsJsonSchema.json").toString()).build();
-        } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @POST
     @Path("addreading")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response addReading(String jsonString) {
@@ -363,9 +177,9 @@ public class ReadingPageResource {
     }
 
     @POST
-    @Path("changepassword")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response changePassword(String jsonString) {
+    @Path("removereading")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response removeReading(String jsonString) {
         DatabaseConnection dbConnection = new DatabaseConnection();
         dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
 
@@ -378,19 +192,74 @@ public class ReadingPageResource {
         }
 
         UserService userService = new UserService(dbConnection);
+        CustomerService customerService = new CustomerService(dbConnection);
+        ReadingService readingService = new ReadingService(dbConnection);
+        ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
 
-        String newPassword = data.getString("password");
+        customerService.setReadingService(readingService);
+        readingService.setCustomerService(customerService);
 
-        sessionUser.setPassword(newPassword);
+        Reading reading = null;
 
         try {
-            userService.updateUser(sessionUser);
+            reading = readingService.getReading(UUID.fromString(data.get("readingid").toString()));
+
+            if(((User)reading.getCustomer().getUser()).getId().equals(sessionUser.getId())){
+                readingService.removeReading(reading);
+            }else{
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Not your Reading").build();
+            }
 
             return Response.status(Response.Status.OK).build();
-        } catch (NoEntityFoundException | DuplicateEntryException | IncompleteDatasetException e) {
-            System.out.println(e.getMessage());
+        } catch (NoEntityFoundException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Reading does not exists").build();
+        }
+    }
 
-            return Response.status(Response.Status.BAD_REQUEST).build();
+    @POST
+    @Path("putreading")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response putReading(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if(sessionUser == null){
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        ReadingService readingService = new ReadingService(dbConnection);
+        ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
+
+        Reading reading = readingJSONMapper.mapReading(data.getJSONObject("reading"));
+
+        reading.getCustomer().setUser(sessionUser);
+
+        try {
+            Reading temp = readingService.getReading(reading.getId());
+
+            if(!((User)temp.getCustomer().getUser()).getId().equals(sessionUser.getId())){
+                System.out.println("Your session has expired");
+
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+            }
+        } catch (NoEntityFoundException e) {
+            System.out.println("Reading doesn't exist");
+
+            return Response.status(Response.Status.BAD_REQUEST).entity("Reading doesn't exist").build();
+        }
+
+        try {
+            readingService.updateReading(reading);
+
+            return Response.status(Response.Status.OK).build();
+        } catch (NoEntityFoundException e) {
+            System.out.println("Reading doesn't exist");
+
+            return Response.status(Response.Status.BAD_REQUEST).entity("Reading doesn't exist").build();
         }
     }
 

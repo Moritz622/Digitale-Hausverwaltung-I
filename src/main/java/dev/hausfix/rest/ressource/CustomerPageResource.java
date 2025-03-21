@@ -317,49 +317,6 @@ public class CustomerPageResource {
     }
 
     @POST
-    @Path("addreading")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response addReading(String jsonString) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
-
-        JSONObject data = new JSONObject(jsonString);
-
-        User sessionUser = checkSession(data, dbConnection);
-
-        if(sessionUser == null){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-        }
-
-        CustomerService customerService = new CustomerService(dbConnection);
-        ReadingService readingService = new ReadingService(dbConnection);
-        ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
-
-        customerService.setReadingService(readingService);
-        readingService.setCustomerService(customerService);
-
-        Reading reading = readingJSONMapper.mapReading(data.getJSONObject("reading"));
-
-        Customer temp = (Customer) reading.getCustomer();
-
-        if(!((User)temp.getUser()).getId().equals(sessionUser.getId())){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
-        }
-
-        try {
-            readingService.addReading(reading);
-
-            return Response.status(Response.Status.OK).build();
-        } catch (IncompleteDatasetException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Incomplete dataset").build();
-        } catch (DuplicateEntryException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Cant use that name").build();
-        } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @POST
     @Path("changepassword")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response changePassword(String jsonString) {

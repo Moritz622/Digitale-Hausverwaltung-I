@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
     <script src="pages/readingpage.js"></script>
     <script src="api/reading.js"></script>
+    <script src="api/customer.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body onload="loadReadingpage()">
@@ -46,14 +47,23 @@
         </div>
         <div class="data">
             <div class="inputContainer">
+                <label>Customer</label>
+                <select id="customerid"></select>
                 <label>Wert</label>
-                <input type="text" id="readingValue" placeholder="" onchange="updateMissingData(this)" />
+                <input type="number" id="metercount" placeholder="" onchange="updateMissingData(this)" />
                 <label>Typ</label>
-                <input type="text" id="typ" placeholder="" onchange="updateMissingData(this)" />
+                <select id="kindofmeter">
+                    <option value="HEIZUNG">Heizung</option>
+                    <option value="STROM">Strom</option>
+                    <option value="WASSER">Wasser</option>
+                    <option value="UNBEKANNT">Unbekannt</option>
+                </select>
                 <label>Datum</label>
-                <input type="date" id="date" placeholder="" onchange="updateMissingData(this)" />
+                <input type="date" id="dateofreading" placeholder="" onchange="updateMissingData(this)" />
                 <label>Kommentar</label>
                 <input type="text" id="comment" placeholder="" onchange="updateMissingData(this)" />
+                <label>Meter ID</label>
+                <input type="text" id="meterid" placeholder="" onchange="updateMissingData(this)" />
                 <label>Substitute</label>
                 <input type="checkbox" id="substitute" class="checkbox" />
             </div>

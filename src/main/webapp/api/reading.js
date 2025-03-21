@@ -1,13 +1,6 @@
-function addReading() {
-    var customerid = "13b53ae0-15c8-4273-80ac-2587699485b6";
-    var comment = "Test_" + Math.floor(Math.random() * 10000000);
-    var dateOfReading = "2025-03-0" + Math.floor(Math.random() * 10);
-    var kindOfMeter = "HEIZUNG";
-    var meterCount = Math.floor(Math.random() * 10000000);
-    var meterId = Math.floor(Math.random() * 10000000).toString();
-    var substitute = false;
-
-    fetch("http://localhost:8069/rest/customerpage/addreading", {
+function addReading(customerid, comment, dateOfReading, kindOfMeter, meterCount, meterId, substitute) {
+    
+    fetch("http://localhost:8069/rest/readingpage/addreading", {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
