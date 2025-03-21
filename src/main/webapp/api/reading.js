@@ -33,10 +33,42 @@ function addReading() {
             }
 
             if (response.ok) {
-                console.log("Ablesung erfolgreich hinzugefügt");
+                console.log("Ablesung erfolgreich hinzugefï¿½gt");
             }
         })
         .catch(error => {
             console.log("error: " + error);
         });
+}
+async function getAllReadings() {
+    let readings;
+
+    await fetch("http://localhost:8069/rest/readingpage/getallreadings", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem("token")
+        })
+    })
+        .then(res => {
+            if (res.status === 401) {
+                window.location.assign("../../index.html"); // Removed "_blank"
+                return null; // Stop execution by returning null
+            }
+            return res.json(); // Parse JSON if status is OK
+        })
+        .then(data => {
+            if (!data) return; // Exit if the request was unauthorized
+
+            readings = data.readings;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+    console.log(readings);
+
+    return readings;
 }
