@@ -112,7 +112,7 @@ public class ReadingPageResource {
         ArrayList<Reading> userReadings = new ArrayList<>();
 
         for(Reading reading : readings){
-            if(reading.getCustomer().getUser() != null){
+            if(reading.getCustomer()!=null&&reading.getCustomer().getUser() != null){
                 if(((User) reading.getCustomer().getUser()).getId().toString().matches(sessionUser.getId().toString())){
                     userReadings.add(reading);
                 }
