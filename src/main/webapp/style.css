@@ -325,8 +325,6 @@ background {
     .table td, th {
         text-align: left;
         padding: 8px;
-        padding-top: 15px;
-        padding-bottom: 15px;
         font-size: 16px;
     }
 
@@ -341,6 +339,16 @@ background {
 
     .table tr:not(:first-child):hover {
         text-decoration: underline black solid 1px;
+    }
+
+    .table .deleteButton {
+        z-index: 1000;
+        font-size: 18px;
+        padding: 0;
+    }
+
+    .table .deleteButton:not(:hover) {
+        background: lightslategray;
     }
 
 .header {
