@@ -48,7 +48,14 @@
         <div class="data">
             <div class="inputContainer">
                 <label>Customer</label>
-                <select id="customerid"></select>
+
+                <div style="display: flex;">
+                    <select id="customerid"></select>
+                    <div onclick="openCustomer()">
+                        <i class="fa-solid fa-arrow-up-right-from-square customerLink"></i>
+                    </div>
+                </div>
+
                 <label>Wert</label>
                 <input type="number" id="metercount" placeholder="" onchange="updateMissingData(this)" />
                 <label>Typ</label>
@@ -72,7 +79,7 @@
         </div>
     </div>
     <div class="infobox" id="infobox">
-        Kunde wurde erfolgreich gespeichert
+        Ablesung wurde erfolgreich gespeichert
     </div>
 </body>
 </html>

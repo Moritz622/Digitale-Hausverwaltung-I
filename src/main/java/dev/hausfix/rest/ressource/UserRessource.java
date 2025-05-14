@@ -44,7 +44,7 @@ public class UserRessource {
             return Response.status(400, "Bad Request: " + e.getMessage()).entity(null).build();
         }
 
-        return Response.status(400, "Bad Request").entity(null).build();
+        return Response.status(400, "Bad Request").build();
     }
 
     @DELETE

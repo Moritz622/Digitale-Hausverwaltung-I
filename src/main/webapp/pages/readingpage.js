@@ -6,9 +6,11 @@ async function saveReading() {
     var comment = document.getElementById("comment").value;
     var metercount = document.getElementById("metercount").value;
     var kindofmeter = document.getElementById("kindofmeter").value;
-    var substitute = document.getElementById("substitute").value;
+    var substitute = document.getElementById("substitute").checked;
     var meterid = document.getElementById("meterid").value;
     var dateofreading = document.getElementById("dateofreading").value;
+
+
     var validRequest = true;
 
     if (metercount == "") {
@@ -32,14 +34,14 @@ async function saveReading() {
         var reading = await getReading(id);
 
         if (reading != null) {
-            if (await editReading(customerid, comment, dateofreading, kindofmeter, metercount, meterid, substitute))
+            if (await editReading(id, customerid, comment, dateofreading, kindofmeter, metercount, meterid, substitute) != null)
                 showInfobox();
 
             return;
         }
     }
 
-    var newReading = await addReading(customerid, comment, dateofreading, kindofmeter, metercount, meterid, substitute)
+    var newReading = await addReading(customerid, comment, dateofreading, kindofmeter, metercount, meterid, substitute);
 
     if (newReading != null) {
         showInfobox();
@@ -67,79 +69,17 @@ async function loadReadingpage() {
     if (id != null) {
         var reading = await getReading(id);
 
-        document.getElementById("firstname").value = reading.firstName;
-        document.getElementById("lastname").value = reading.lastName;
-        document.getElementById("birthdate").value = reading.birthDate;
-        document.getElementById("gender").value = reading.gender;
+        document.getElementById("customerid").value = reading.customer.id;
+        document.getElementById("metercount").value = reading.meterCount;
+        document.getElementById("kindofmeter").value = reading.kindOfMeter.toString().toUpperCase();
 
-        const today = new Date();
-        const formattedDateEnd = today.toISOString().split('T')[0];
+        const date = new Date(reading.dateOfReading);
+        const formattedDate = date.toISOString().split('T')[0]; // ergibt yyyy-mm-dd
+        document.getElementById("dateofreading").value = formattedDate;
 
-        today.setMonth(today.getMonth() - 1);
-        const formattedDateStart = today.toISOString().split('T')[0];
-
-        var readings = await getReadingReadings(id, formattedDateStart, formattedDateEnd);
-
-        console.log(readings);
-
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        const result = [["Datum", "Heizung", "Strom", "Wasser", "Unbekannt"]];
-
-        const dataMap = new Map();
-
-        readings.forEach(reading => {
-            const datum = reading.dateOfReading;
-
-            const typ = reading.kindOfMeter;
-            const wert = reading.meterCount;
-
-            if (!dataMap.has(datum)) {
-                dataMap.set(datum, {
-                    heizung: 0,
-                    strom: 0,
-                    wasser: 0,
-                    unbekannt: 0
-                });
-            }
-
-            const currentData = dataMap.get(datum);
-            if (typ === "HEIZUNG") {
-                currentData.heizung = wert;
-            } else if (typ === "STROM") {
-                currentData.strom = wert;
-            } else if (typ === "WASSER") {
-                currentData.wasser = wert;
-            } else {
-                currentData.unbekannt = wert;
-            }
-        });
-
-        if (dataMap.size == 0) {
-            result.push(["Keine Daten vorhanden", 0, 0, 0, 0]);
-        }
-
-        // Konvertiere die Map in das gewünschte Format
-        dataMap.forEach((value, datum) => {
-            result.push([datum, value.heizung, value.strom, value.wasser, value.unbekannt]);
-        });
-
-        console.log(result);
-
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable(result);
-
-            var options = {
-                title: 'Ablesedaten',
-                curveType: 'function',
-                legend: { position: 'side' }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-            chart.draw(data, options);
-        }
+        document.getElementById("comment").value = reading.comment;
+        document.getElementById("meterid").value = reading.meterId;
+        document.getElementById("substitute").checked = reading.substitute;
     }
 }
 
@@ -166,4 +106,10 @@ async function showInfobox() {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function openCustomer() {
+    var id = document.getElementById("customerid").value;
+
+    window.open("customer.html?id=" + id);
 }

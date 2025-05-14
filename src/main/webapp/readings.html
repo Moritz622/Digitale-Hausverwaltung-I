@@ -37,19 +37,21 @@
         <a class="button addButton" href="reading.html"><i class="fa-solid fa-plus"></i></a>
         <div class="button" onclick="showReadingImportPopup()">Import</div>
 
-        <table class="table">
-            <tr>
-                <th>Wert</th>
-                <th>Typ</th>
-                <th>Datum</th>
-                <th>Kommentar</th>
-                <th>Substitute</th>
-            </tr>
-            <tr>
-            </tr>
-            <tr>
-            </tr>
-        </table>
+        <div class="tableContainer">
+            <table class="table" id="readingTable" style="overflow-y: scroll">
+                <thead>
+                    <tr>
+                        <th>Wert</th>
+                        <th>Typ</th>
+                        <th>Datum</th>
+                        <th>Kommentar</th>
+                        <th>Substitute</th>
+                        <th>Messgerät ID</th>
+                        <th>Kunde</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 
     <div class="popup" id="readingImportPopup">
@@ -81,8 +83,6 @@
 
             .addButton {
                 font-size: 32px;
-                width: 32px;
-                height: 32px;
             }
         </style>
 
@@ -90,8 +90,8 @@
             <h1>Import</h1>
             <input type="file" placeholder="Datei Auswählen" dropzone="true" />
             <div class="footer">
-                <button class="button">Import Datei Herunterladen</button>
-                <button class="button addButton">Import Starten</button>
+                <a class="button" href="res/ImportVorlageHausfix.xlsx">Import Datei Herunterladen</a>
+                <button class="button">Import Starten</button>
                 <button class="button cancelButton" onclick="closeReadingImportPopup()">Abbrechen</button>
             </div>
         </div>

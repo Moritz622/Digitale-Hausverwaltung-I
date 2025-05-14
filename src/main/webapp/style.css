@@ -147,6 +147,18 @@ background {
     animation: 3s rotate infinite linear;
 }
 
+.tableContainer {
+    position: relative;
+    height: 90%;
+    overflow-y: scroll;
+    width: 100%;
+    border-radius: 8px;
+}
+
+    .tableContainer::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+    }
+
 .page {
     top: 10%;
     left: 17%;
@@ -320,13 +332,27 @@ background {
 
     .table th {
         font-size: 24px;
+        text-align: center;
     }
 
     .table td, th {
         text-align: left;
         padding: 8px;
         font-size: 16px;
+        text-align: center;
     }
+
+    .table .sub {
+        font-size: 32px;
+    }
+
+        .table .true {
+            color: lime;
+        }
+
+        .table .false {
+            color: red;
+        }
 
     .table tr:nth-child(even) {
         background: #e1eaff;
@@ -347,9 +373,9 @@ background {
         padding: 0;
     }
 
-    .table .deleteButton:not(:hover) {
-        background: lightslategray;
-    }
+        .table .deleteButton:not(:hover) {
+            background: lightslategray;
+        }
 
 .header {
     position: absolute;
@@ -366,7 +392,6 @@ background {
     color: transparent;
     background-clip: text;
     min-height: 5em;
-
     user-select: none;
 }
 
@@ -404,7 +429,7 @@ background {
 
         .sidebar span:hover .icon {
             color: #6f54e9; /* fallback for old browsers */
-            
+
             transition: 0.4s;
         }
 
@@ -421,7 +446,6 @@ background {
     }
 
     .sidebar a:hover {
-        
     }
 
 
@@ -509,10 +533,10 @@ select {
         width: fit-content;
     }
 
-        .inputContainer input:hover:not(.checkbox) select:hover {
-            box-shadow: 1px 1px 1px 1px #4776E6;
-            transition: 0.2s;
-        }
+    .inputContainer input:hover:not(.checkbox) select:hover {
+        box-shadow: 1px 1px 1px 1px #4776E6;
+        transition: 0.2s;
+    }
 
 .infobox {
     position: absolute;
@@ -546,9 +570,9 @@ select {
     border-radius: 8px;
 }
 
-.changePasswordForm label {
-    margin-top: 10px;
-}
+    .changePasswordForm label {
+        margin-top: 10px;
+    }
 
     .changePasswordForm button {
         border-radius: 8px;
@@ -571,6 +595,14 @@ select {
         user-select: none;
     }
 
+.customerLink {
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
 @keyframes infoboxShow {
     from {
         width: 100%;
@@ -583,6 +615,7 @@ select {
         opacity: 0.2;
     }
 }
+
 @keyframes start {
     from {
         transform: translate(-50%, -50%) rotate(0deg);

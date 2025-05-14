@@ -5,7 +5,7 @@ function register() {
     var passwordConfirm = document.getElementById("password2").value;
 
     if (password != passwordConfirm) {
-        console.log("behindert");
+        loginFailed();
     } else {
         fetch("http://localhost:8069/rest/users/register", {
             method: 'POST',
@@ -19,4 +19,24 @@ function register() {
             })
         });
     }
+}
+
+async function loginFailed() {
+    document.getElementsByClassName("formContainer")[0].classList.add("loginFailed");
+
+    await sleep(1000);
+
+    document.getElementsByClassName("formContainer")[0].classList.remove("loginFailed");
+}
+
+async function loginSuccessfull() {
+    document.getElementsByClassName("formContainer")[0].classList.add("loginSuccessfull");
+
+    await sleep(800);
+
+    window.location.assign("homepage.html", "_blank");
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

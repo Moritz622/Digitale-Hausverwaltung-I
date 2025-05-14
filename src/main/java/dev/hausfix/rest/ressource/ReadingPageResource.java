@@ -25,6 +25,10 @@ import jakarta.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -62,6 +66,8 @@ public class ReadingPageResource {
 
         JSONObject data = new JSONObject(jsonString);
 
+        System.out.println(data);
+
         User sessionUser = checkSession(data, dbConnection);
 
         if(sessionUser == null){
@@ -70,7 +76,14 @@ public class ReadingPageResource {
 
         String id = data.getString("readingid");
 
+        System.out.println(id);
+
         ReadingService readingService = new ReadingService(dbConnection);
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
         ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
 
         Reading reading;
@@ -79,7 +92,7 @@ public class ReadingPageResource {
             reading = readingService.getReading(UUID.fromString(id));
 
             if(((User) reading.getCustomer().getUser()).getId().toString().matches(sessionUser.getId().toString())){
-                return Response.status(Response.Status.OK).entity(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/CustomerJsonSchema.json").toString()).build();
+                return Response.status(Response.Status.OK).entity(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/ReadingJsonSchema.json").toString()).build();
             }else{
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
@@ -105,6 +118,10 @@ public class ReadingPageResource {
         }
 
         ReadingService readingService = new ReadingService(dbConnection);
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+
         ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
 
         ArrayList<Reading> readings = readingService.getAllReadings();
@@ -112,7 +129,7 @@ public class ReadingPageResource {
         ArrayList<Reading> userReadings = new ArrayList<>();
 
         for(Reading reading : readings){
-            if(reading.getCustomer()!=null&&reading.getCustomer().getUser() != null){
+            if(reading.getCustomer()!=null && reading.getCustomer().getUser() != null){
                 if(((User) reading.getCustomer().getUser()).getId().toString().matches(sessionUser.getId().toString())){
                     userReadings.add(reading);
                 }
@@ -129,6 +146,8 @@ public class ReadingPageResource {
         }
 
         main.put("readings", readingJSON);
+
+        System.out.println(main.toString());
 
         return Response.status(Response.Status.OK).entity(SchemaLoader.load(main, "schema/ReadingsJsonSchema.json").toString()).build();
     }
@@ -166,7 +185,7 @@ public class ReadingPageResource {
         try {
             readingService.addReading(reading);
 
-            return Response.status(Response.Status.OK).build();
+            return Response.status(Response.Status.OK).entity(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/ReadingJsonSchema.json").toString()).build();
         } catch (IncompleteDatasetException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Incomplete dataset").build();
         } catch (DuplicateEntryException e) {
@@ -232,11 +251,15 @@ public class ReadingPageResource {
         }
 
         ReadingService readingService = new ReadingService(dbConnection);
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
         ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
 
         Reading reading = readingJSONMapper.mapReading(data.getJSONObject("reading"));
-
-        reading.getCustomer().setUser(sessionUser);
 
         try {
             Reading temp = readingService.getReading(reading.getId());
@@ -263,4 +286,51 @@ public class ReadingPageResource {
         }
     }
 
+    @POST
+    @Path("importreadings")
+    @Consumes("text/csv")
+    public Response importReadingsFromCSV(InputStream uploadedInputStream) {
+        try {
+            List<Reading> readings = parseCSV(uploadedInputStream);
+            return Response.ok("CSV erfolgreich verarbeitet").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Fehler beim Verarbeiten der CSV: " + e.getMessage())
+                    .build();
+        }
+    }
+
+    public List<Reading> parseCSV(InputStream inputStream) throws IOException {
+        List<Reading> readings = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            boolean firstLine = true;
+
+            while ((line = reader.readLine()) != null) {
+                if (firstLine) {
+                    firstLine = false;
+                    continue;
+                }
+
+                String[] parts = line.split(";");
+                if (parts.length < 6) continue;
+
+                double value = Double.parseDouble(parts[0]);
+                String type = parts[1];
+                String date = parts[2];
+                String comment = parts[3];
+                String substitute = parts[4];
+                String deviceId = parts[5];
+
+                Reading reading = new Reading();
+                reading.setMeterCount(value);
+                reading.setKindOfMeter(EKindOfMeter.valueOf(type));
+
+                readings.add(reading);
+            }
+        }
+
+        return readings;
+    }
 }
