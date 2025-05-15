@@ -159,6 +159,68 @@ background {
         display: none; /* Safari and Chrome */
     }
 
+.pageHeader {
+    padding-left: 20px;
+}
+
+    .pageHeader input, select {
+        font-size: 18px;
+        border-radius: 8px;
+        border: 1px #8075aa solid;
+        transition: 0.2s;
+        user-select: none;
+        padding: 2px;
+        width: fit-content;
+        margin-right: 8px;
+    }
+
+        .pageHeader input:is(.checkbox) {
+            width: 18px;
+            height: 18px;
+        }
+
+    .pageHeader span {
+        display: flex;
+        align-items: center;
+    }
+
+.chartContainer {
+    width: 90%;
+    height: 600px;
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+    .chartContainer .chart {
+        width: 100%;
+        height: 00px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .chartContainer label {
+        font-size: 28px;
+        margin-top: 25px;
+        font-family: Figtree;
+        user-select: none;
+    }
+
+    .chartContainer input, select {
+        border-radius: 8px;
+        border: 1px #8075aa solid;
+        transition: 0.2s;
+        user-select: none;
+        padding: 2px;
+        width: fit-content;
+        margin-right: 8px;
+    }
+
+        .chartContainer input:hover:not(.checkbox) select:hover {
+            box-shadow: 1px 1px 1px 1px #4776E6;
+            transition: 0.2s;
+        }
+
 .page {
     top: 10%;
     left: 17%;
@@ -166,6 +228,7 @@ background {
     width: 83%;
     position: absolute;
     animation: fadein .3s ease-out;
+    overflow: scroll;
 }
 
     .page:is(.containerpage) {
@@ -290,6 +353,7 @@ background {
     position: absolute;
     box-shadow: 0px 2px 1px 2px #333;
     display: none;
+    z-index: 10028374;
 }
 
     .popup:is(.visible) {
@@ -346,13 +410,13 @@ background {
         font-size: 32px;
     }
 
-        .table .true {
-            color: lime;
-        }
+    .table .true {
+        color: lime;
+    }
 
-        .table .false {
-            color: red;
-        }
+    .table .false {
+        color: red;
+    }
 
     .table tr:nth-child(even) {
         background: #e1eaff;
@@ -448,6 +512,10 @@ background {
     .sidebar a:hover {
     }
 
+#inputContainerCustomer {
+    margin-right: 20px;
+}
+
 
 
 @media (max-width: 1000px) {
@@ -508,7 +576,6 @@ select {
 .inputContainer {
     position: relative;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
     color: #222;
     margin-left: 20px;
@@ -541,9 +608,9 @@ select {
 .infobox {
     position: absolute;
     height: 20px;
-    padding: 8px;
     background: -webkit-linear-gradient(45deg, #37a339, #46a937);
     background: linear-gradient(45deg, #37a339, #46a937);
+    padding: 8px;
     border-radius: 8px;
     color: white;
     font-size: 20px;
@@ -555,6 +622,16 @@ select {
     display: none;
     user-select: none;
 }
+
+    .infobox:is(.ok) {
+        background: -webkit-linear-gradient(45deg, #37a339, #46a937);
+        background: linear-gradient(45deg, #37a339, #46a937);
+    }
+
+    .infobox:is(.error) {
+        background: -webkit-linear-gradient(45deg, #a33937, #a93937);
+        background: linear-gradient(45deg, #a33937, #a93937);
+    }
 
 .show {
     display: unset;
@@ -601,6 +678,10 @@ select {
     align-items: center;
     margin-left: 5px;
     cursor: pointer;
+}
+
+.data {
+    flex-wrap: wrap;
 }
 
 @keyframes infoboxShow {

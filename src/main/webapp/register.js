@@ -1,4 +1,4 @@
-function register() {
+async function register() {
     var username = document.getElementById("username").value;
     var email = document.getElementById("email").value;
     var password = document.getElementById("password1").value;
@@ -17,7 +17,11 @@ function register() {
                 email: email,
                 password: password
             })
-        });
+        }).then(res => res.json())
+            .then(data => {
+                loginSuccessfull();
+            })
+            .catch(loginFailed());
     }
 }
 

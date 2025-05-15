@@ -126,14 +126,20 @@ async function addCustomer(firstname, lastname, birthdate, gender) {
             if (response.ok) {
                 return response.json();
             }
+
+            return response.status;
         })
         .then(data => {
             if (!data) return;
 
+            if (data >= 400) {
+                return data;
+            }
+
             return data.customer;
         })
         .catch(error => {
-            return false;
+            return response.status;
         });
 }
 
@@ -194,7 +200,7 @@ async function editCustomer(firstname, lastname, birthdate, gender, id) {
         });
 }
 
-async function getCustomerReadings(customerid, startDate, endDate) {
+async function getCustomerReadings(customerid, startDate, endDate, type) {
     return await fetch("http://localhost:8069/rest/customerpage/getcustomerreadings", {
         method: 'POST',
         headers: {
@@ -205,7 +211,7 @@ async function getCustomerReadings(customerid, startDate, endDate) {
             customerid: customerid,
             startdate: startDate,
             enddate: endDate,
-            type: "HEIZUNG"
+            type: type
         })
     })
         .then(res => res.json())

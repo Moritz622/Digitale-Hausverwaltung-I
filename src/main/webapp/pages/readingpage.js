@@ -10,6 +10,12 @@ async function saveReading() {
     var meterid = document.getElementById("meterid").value;
     var dateofreading = document.getElementById("dateofreading").value;
 
+    var newCustomer = (document.getElementById("customerid").value === "new");
+    
+    var customerfirstName = document.getElementById("firstname").value;
+    var customerlastName = document.getElementById("lastname").value;
+    var customerbirthdate = document.getElementById("birthdate").value;
+    var customergender = document.getElementById("gender").value;
 
     var validRequest = true;
 
@@ -17,6 +23,7 @@ async function saveReading() {
         document.getElementById("metercount").classList.add("missingData");
         validRequest = false;
     }
+
     if (customerid == "") {
         document.getElementById("customerid").classList.add("missingData");
         validRequest = false;
@@ -27,8 +34,29 @@ async function saveReading() {
         validRequest = false;
     }
 
+    if (newCustomer) {
+        if (customerfirstName === "") {
+            document.getElementById("firstname").classList.add("missingData");
+            validRequest = false;
+        }
+        if (customerlastName === "") {
+            document.getElementById("lastname").classList.add("missingData");
+            validRequest = false;
+        }
+        if (customerbirthdate === "") {
+            document.getElementById("birthdate").classList.add("missingData");
+            validRequest = false;
+        }
+    }
+
     if (!validRequest)
         return;
+
+    if (newCustomer) {
+        var c = await addCustomer(customerfirstName, customerlastName, customerbirthdate, customergender);
+
+        customerid = c.id;
+    }
 
     if (id != null) {
         var reading = await getReading(id);
@@ -69,7 +97,10 @@ async function loadReadingpage() {
     if (id != null) {
         var reading = await getReading(id);
 
-        document.getElementById("customerid").value = reading.customer.id;
+        if (reading.customer) {
+            document.getElementById("customerid").value = reading.customer.id;
+        }
+
         document.getElementById("metercount").value = reading.meterCount;
         document.getElementById("kindofmeter").value = reading.kindOfMeter.toString().toUpperCase();
 
@@ -80,6 +111,8 @@ async function loadReadingpage() {
         document.getElementById("comment").value = reading.comment;
         document.getElementById("meterid").value = reading.meterId;
         document.getElementById("substitute").checked = reading.substitute;
+
+        customerChanged();
     }
 }
 
@@ -112,4 +145,12 @@ function openCustomer() {
     var id = document.getElementById("customerid").value;
 
     window.open("customer.html?id=" + id);
+}
+
+function customerChanged() {
+    if (customerid.value === "new") {
+        document.getElementById("inputContainerCustomer").style.display = "";
+    } else {
+        document.getElementById("inputContainerCustomer").style.display = "none";
+    }
 }

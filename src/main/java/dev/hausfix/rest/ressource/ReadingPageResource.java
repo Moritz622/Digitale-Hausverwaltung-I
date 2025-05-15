@@ -25,10 +25,8 @@ import jakarta.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -91,7 +89,7 @@ public class ReadingPageResource {
         try {
             reading = readingService.getReading(UUID.fromString(id));
 
-            if(((User) reading.getCustomer().getUser()).getId().toString().matches(sessionUser.getId().toString())){
+            if(((User) reading.getUser()).getId().toString().matches(sessionUser.getId().toString())){
                 return Response.status(Response.Status.OK).entity(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/ReadingJsonSchema.json").toString()).build();
             }else{
                 return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -129,13 +127,12 @@ public class ReadingPageResource {
         ArrayList<Reading> userReadings = new ArrayList<>();
 
         for(Reading reading : readings){
-            if(reading.getCustomer()!=null && reading.getCustomer().getUser() != null){
-                if(((User) reading.getCustomer().getUser()).getId().toString().matches(sessionUser.getId().toString())){
+            if(reading.getUser() != null){
+                if(((User) reading.getUser()).getId().toString().matches(sessionUser.getId().toString())){
                     userReadings.add(reading);
                 }
             }
         }
-
 
         JSONObject main = new JSONObject();
 
@@ -146,8 +143,6 @@ public class ReadingPageResource {
         }
 
         main.put("readings", readingJSON);
-
-        System.out.println(main.toString());
 
         return Response.status(Response.Status.OK).entity(SchemaLoader.load(main, "schema/ReadingsJsonSchema.json").toString()).build();
     }
@@ -175,6 +170,8 @@ public class ReadingPageResource {
         readingService.setCustomerService(customerService);
 
         Reading reading = readingJSONMapper.mapReading(data.getJSONObject("reading"));
+
+        reading.setUser(sessionUser);
 
         Customer temp = (Customer) reading.getCustomer();
 
@@ -264,14 +261,10 @@ public class ReadingPageResource {
         try {
             Reading temp = readingService.getReading(reading.getId());
 
-            if(!((User)temp.getCustomer().getUser()).getId().equals(sessionUser.getId())){
-                System.out.println("Your session has expired");
-
+            if(!((User)temp.getUser()).getId().equals(sessionUser.getId())){
                 return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
             }
         } catch (NoEntityFoundException e) {
-            System.out.println("Reading doesn't exist");
-
             return Response.status(Response.Status.BAD_REQUEST).entity("Reading doesn't exist").build();
         }
 
@@ -280,10 +273,123 @@ public class ReadingPageResource {
 
             return Response.status(Response.Status.OK).build();
         } catch (NoEntityFoundException e) {
-            System.out.println("Reading doesn't exist");
 
             return Response.status(Response.Status.BAD_REQUEST).entity("Reading doesn't exist").build();
         }
+    }
+
+    @POST
+    @Path("export/json")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response exportReadingsAsJSON(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if (sessionUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        ReadingService readingService = new ReadingService(dbConnection);
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
+        ArrayList<Reading> readings = readingService.getAllReadings();
+
+        ArrayList<Reading> userReadings = new ArrayList<>();
+
+        for (Reading reading : readings) {
+            if (reading.getUser() != null) {
+                if (((User) reading.getUser()).getId().toString().matches(sessionUser.getId().toString())) {
+                    userReadings.add(reading);
+                }
+            }
+        }
+
+        JSONObject main = new JSONObject();
+
+        JSONArray readingJSON = new JSONArray();
+
+        ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
+
+        for(Reading reading : userReadings){
+            readingJSON.put(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/ReadingJsonSchema.json").get("reading"));
+        }
+
+        main.put("readings", readingJSON);
+
+        byte[] jsonBytes = main.toString(4).getBytes(StandardCharsets.UTF_8); // 4 = pretty print
+
+        return Response.ok(jsonBytes)
+                .type("application/json; charset=UTF-8")
+                .header("Content-Disposition", "attachment; filename=\"export.json\"")
+                .build();
+    }
+
+    @POST
+    @Path("export/csv")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response exportReadingsAsCSV(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if (sessionUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        ReadingService readingService = new ReadingService(dbConnection);
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
+        ArrayList<Reading> readings = readingService.getAllReadings();
+
+        ArrayList<Reading> userReadings = new ArrayList<>();
+
+        for(Reading reading : readings){
+            if(reading.getUser() != null){
+                if(((User) reading.getUser()).getId().toString().matches(sessionUser.getId().toString())){
+                    userReadings.add(reading);
+                }
+            }
+        }
+
+        File file = null;
+
+        try {
+            file = File.createTempFile("readings", ".csv");
+
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
+
+            pw.println("Wert,Typ,Datum,Kommentar,Substitute,Meter ID,Kunde Vorname,Kunde Nachname");
+
+            for(Reading userReading : userReadings){
+                pw.println(userReading.getMeterCount() + "," + userReading.getKindOfMeter() + "," + userReading.getDateOfReading() + "," + userReading.getComment() + "," + userReading.getSubstitute() + "," + userReading.getMeterId() + "," + userReading.getCustomer().getFirstName() + "," + userReading.getCustomer().getLastName());
+            }
+
+            pw.flush();
+            pw.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Response.ok(file, MediaType.valueOf("text/csv; charset=UTF-8"))
+                .header("Content-Disposition", "attachment; filename=\"export.csv\"")
+                .build();
     }
 
     @POST

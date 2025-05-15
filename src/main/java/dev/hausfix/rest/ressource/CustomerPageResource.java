@@ -162,6 +162,8 @@ public class CustomerPageResource {
         } catch (IncompleteDatasetException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Incomplete dataset").build();
         } catch (DuplicateEntryException e) {
+            System.out.println(e.getMessage());
+
             return Response.status(Response.Status.CONFLICT).entity("Customer already exists").build();
         } catch (NoEntityFoundException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not add Customer").build();
@@ -285,6 +287,8 @@ public class CustomerPageResource {
         customerService.setReadingService(readingService);
         readingService.setCustomerService(customerService);
 
+        System.out.println("test1");
+
         try {
             Customer temp = customerService.getCustomer(UUID.fromString(data.get("customerid").toString()));
 
@@ -295,8 +299,20 @@ public class CustomerPageResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Customer doesn't exist").build();
         }
 
+        System.out.println("test2");
+
         try {
-            List<Reading> readings = readingService.getReadingsByCriteria(UUID.fromString(data.getString("customerid")), LocalDate.parse(data.getString("startdate")), LocalDate.parse(data.getString("enddate")), EKindOfMeter.valueOf(data.getString("type")));
+            List<Reading> readings;
+
+            System.out.println("huan: " + jsonString);
+
+            if(!data.getString("type").matches("")){
+                readings = readingService.getReadingsByCriteria(UUID.fromString(data.getString("customerid")), LocalDate.parse(data.getString("startdate")), LocalDate.parse(data.getString("enddate")), EKindOfMeter.valueOf(data.getString("type")));
+            }else{
+                readings = readingService.getReadingsByCriteria(UUID.fromString(data.getString("customerid")), LocalDate.parse(data.getString("startdate")), LocalDate.parse(data.getString("enddate")), null);
+            }
+
+            System.out.println("test3");
 
             JSONObject main = new JSONObject();
 
@@ -304,11 +320,17 @@ public class CustomerPageResource {
 
             ReadingJSONMapper readingJSONMapper = new ReadingJSONMapper();
 
+            System.out.println("test4");
+
             for(Reading reading : readings) {
                 readingJSON.put(SchemaLoader.load(readingJSONMapper.mapReading(reading), "schema/ReadingJsonSchema.json").get("reading"));
             }
 
+            System.out.println("test5");
+
             main.put("readings", readingJSON);
+
+            System.out.println("test6");
 
             return Response.status(Response.Status.OK).entity(SchemaLoader.load(main, "schema/ReadingsJsonSchema.json").toString()).build();
         } catch (SQLException e) {
@@ -342,8 +364,6 @@ public class CustomerPageResource {
 
             return Response.status(Response.Status.OK).build();
         } catch (NoEntityFoundException | DuplicateEntryException | IncompleteDatasetException e) {
-            System.out.println(e.getMessage());
-
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }

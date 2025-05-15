@@ -13,6 +13,7 @@ public interface IReading {
     void setMeterCount(double meterCount);
     void setMeterId(String meterId);
     void setSubstitute(boolean substitute);
+    void setUser(IUser user);
 
     // Getter methods
     String getComment();
@@ -22,6 +23,7 @@ public interface IReading {
     double getMeterCount();
     String getMeterId();
     boolean getSubstitute();
+    IUser getUser();
 
     // Custom method to print the date of reading
     String printDateOfReading();

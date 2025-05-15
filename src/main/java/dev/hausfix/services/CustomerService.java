@@ -39,8 +39,8 @@ public class CustomerService extends Service implements ICustomerService {
         }
 
         try {
-            getCustomer(customer.getId());
-            throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit der ID vorhanden");
+            if(getCustomer(customer.getId()) != null)
+                throw new DuplicateEntryException("Doppelter Eintrag: Es ist bereits ein Kunde mit der ID vorhanden (" + customer.getId() + ")");
         } catch (NoEntityFoundException e) {}
 
         String id = customer.getId().toString();
@@ -92,8 +92,12 @@ public class CustomerService extends Service implements ICustomerService {
             List<Reading> readingsOfCustomer = readingService.getReadingsByCriteria(customer.getId(), LocalDate.MIN, LocalDate.MAX, null);
 
             for(Reading reading : readingsOfCustomer){
+                System.out.println(reading.getId());
+
                 reading.setCustomer(null);
                 readingService.updateReading(reading);
+
+                System.out.println(reading.getCustomer());
             }
 
             stmt.executeQuery("DELETE FROM customers WHERE id = '" + customer.getId() + "'");
@@ -222,25 +226,28 @@ public class CustomerService extends Service implements ICustomerService {
         try {
             ResultSet resultsSet = databaseConnection.getConnection().prepareStatement("SELECT * FROM customers WHERE id = '" + id + "'").executeQuery();
 
-            resultsSet.next();
+            if(resultsSet.next()) {
 
-            Customer customer = new Customer();
+                Customer customer = new Customer();
 
-            customer.setId(UUID.fromString(resultsSet.getString("id")));
-            customer.setLastName(resultsSet.getString("lastname"));
-            customer.setFirstName(resultsSet.getString("firstname"));
-            customer.setBirthDate(resultsSet.getDate("birthdate").toLocalDate());
-            customer.setGender(EGender.valueOf(resultsSet.getString("gender")));
+                customer.setId(UUID.fromString(resultsSet.getString("id")));
+                customer.setLastName(resultsSet.getString("lastname"));
+                customer.setFirstName(resultsSet.getString("firstname"));
+                customer.setBirthDate(resultsSet.getDate("birthdate").toLocalDate());
+                customer.setGender(EGender.valueOf(resultsSet.getString("gender")));
 
-            UserService userService = new UserService(databaseConnection);
+                UserService userService = new UserService(databaseConnection);
 
-            try{
-                customer.setUser(userService.getUser(UUID.fromString(resultsSet.getString("userid"))));
-            }catch(Exception e){
-                customer.setUser(null);
+                try {
+                    customer.setUser(userService.getUser(UUID.fromString(resultsSet.getString("userid"))));
+                } catch (Exception e) {
+                    customer.setUser(null);
+                }
+
+                return customer;
+            }else{
+                return null;
             }
-
-            return customer;
         } catch (SQLException e) {
             throw new NoEntityFoundException("Es konnte kein Kunde mit der ID gefunden werden");
         }

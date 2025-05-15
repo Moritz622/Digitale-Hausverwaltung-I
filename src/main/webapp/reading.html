@@ -47,10 +47,14 @@
         </div>
         <div class="data">
             <div class="inputContainer">
+                <h1>Basis Daten</h1>
+
                 <label>Customer</label>
 
                 <div style="display: flex;">
-                    <select id="customerid"></select>
+                    <select id="customerid" onchange="customerChanged()">
+                        <option value="new">Neuer Kunde</option>
+                    </select>
                     <div onclick="openCustomer()">
                         <i class="fa-solid fa-arrow-up-right-from-square customerLink"></i>
                     </div>
@@ -75,7 +79,22 @@
                 <input type="checkbox" id="substitute" class="checkbox" />
             </div>
 
-            <div class="chart" id="curve_chart"></div>
+            <div id="inputContainerCustomer" class="inputContainer">
+                <h1>Neuer Kunde</h1>
+                <label>Vorname</label>
+                <input type="text" id="firstname" placeholder="" onchange="updateMissingData(this)" />
+                <label>Nachname</label>
+                <input type="text" id="lastname" placeholder="" onchange="updateMissingData(this)" />
+                <label>Geburtsdatum</label>
+                <input type="date" id="birthdate" placeholder="" onchange="updateMissingData(this)" />
+                <label>Geschlecht</label>
+                <select id="gender">
+                    <option value="M">Männlich</option>
+                    <option value="W">Weiblich</option>
+                    <option value="D">Divers</option>
+                    <option value="U">Unbekannt</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="infobox" id="infobox">

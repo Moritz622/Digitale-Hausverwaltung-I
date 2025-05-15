@@ -32,7 +32,7 @@ async function saveCustomer() {
 
         if (customer != null) {
             if (await editCustomer(firstname, lastname, birthdate, gender, id))
-                showInfobox();
+                showInfobox("Kunde erfolgreich gespeichert.", false);
 
             return;
         }
@@ -40,8 +40,10 @@ async function saveCustomer() {
 
     var newCustomer = await addCustomer(firstname, lastname, birthdate, gender)
 
-    if (newCustomer != null) {
-        showInfobox();
+    console.log(newCustomer);
+
+    if (newCustomer.id) {
+        showInfobox("Kunde erfolgreich gespeichert.", false);
 
         const url = new URL(window.location.href);
         url.searchParams.set("id", newCustomer.id);
@@ -49,6 +51,8 @@ async function saveCustomer() {
         window.history.pushState({}, '', url);
 
         loadCustomerpage();
+    } else if(newCustomer == 409) {
+        showInfobox("Es existiert bereits ein Kunde mit diesem Namen.", true);
     }
 }
 
@@ -70,68 +74,84 @@ async function loadCustomerpage() {
         today.setMonth(today.getMonth() - 1);
         const formattedDateStart = today.toISOString().split('T')[0];
 
-        var readings = await getCustomerReadings(id, formattedDateStart, formattedDateEnd);
+        document.getElementById("chartDateFrom").value = formattedDateStart;
 
-        console.log(readings);
+        document.getElementById("chartDateTo").value = formattedDateEnd;
 
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
+        loadChart();
+    }
+}
 
-        const result = [["Datum", "Heizung", "Strom", "Wasser", "Unbekannt"]];
+async function loadChart() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
-        const dataMap = new Map();
+    var fromDate = new Date(document.getElementById("chartDateFrom").value);
+    const formattedDateStart = fromDate.toISOString().split('T')[0];
 
-        readings.forEach(reading => {
-            const datum = reading.dateOfReading;
+    var toDate = new Date(document.getElementById("chartDateTo").value);
+    const formattedDateEnd = toDate.toISOString().split('T')[0];
 
-            const typ = reading.kindOfMeter;
-            const wert = reading.meterCount;
+    var chartType = document.getElementById("chartType").value;
 
-            if (!dataMap.has(datum)) {
-                dataMap.set(datum, {
-                    heizung: 0,
-                    strom: 0,
-                    wasser: 0,
-                    unbekannt: 0
-                });
-            }
+    var readings = await getCustomerReadings(id, formattedDateStart, formattedDateEnd, chartType);
 
-            const currentData = dataMap.get(datum);
-            if (typ === "HEIZUNG") {
-                currentData.heizung = wert;
-            } else if (typ === "STROM") {
-                currentData.strom = wert;
-            } else if (typ === "WASSER") {
-                currentData.wasser = wert;
-            } else {
-                currentData.unbekannt = wert;
-            }
-        });
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
 
-        if (dataMap.size == 0) {
-            result.push(["Keine Daten vorhanden", 0, 0, 0, 0]);
+    const result = [["Datum", "Heizung", "Strom", "Wasser", "Unbekannt"]];
+
+    const dataMap = new Map();
+
+    readings.forEach(reading => {
+        const datum = reading.dateOfReading;
+
+        const typ = reading.kindOfMeter;
+        const wert = reading.meterCount;
+
+        if (!dataMap.has(datum)) {
+            dataMap.set(datum, {
+                heizung: 0,
+                strom: 0,
+                wasser: 0,
+                unbekannt: 0
+            });
         }
 
-        // Konvertiere die Map in das gewünschte Format
-        dataMap.forEach((value, datum) => {
+        const currentData = dataMap.get(datum);
+        if (typ === "HEIZUNG") {
+            currentData.heizung = wert;
+        } else if (typ === "STROM") {
+            currentData.strom = wert;
+        } else if (typ === "WASSER") {
+            currentData.wasser = wert;
+        } else {
+            currentData.unbekannt = wert;
+        }
+    });
+
+    if (dataMap.size == 0) {
+        result.push(["Keine Daten vorhanden", 0, 0, 0, 0]);
+    }
+
+    [...dataMap.entries()]
+        .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+        .forEach(([datum, value]) => {
             result.push([datum, value.heizung, value.strom, value.wasser, value.unbekannt]);
         });
 
-        console.log(result);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(result);
 
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable(result);
+        var options = {
+            title: 'Ablesedaten',
+            curveType: 'function',
+            legend: { position: 'side' }
+        };
 
-            var options = {
-                title: 'Ablesedaten',
-                curveType: 'function',
-                legend: { position: 'side' }
-            };
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-            chart.draw(data, options);
-        }
+        chart.draw(data, options);
     }
 }
 
@@ -150,7 +170,17 @@ function updateMissingData(element) {
     element.classList.remove("missingData");
 }
 
-async function showInfobox() {
+async function showInfobox(text, error) {
+    document.getElementById("infobox").innerHTML = text;
+
+    if (error) {
+        document.getElementById("infobox").classList.add("error");
+        document.getElementById("infobox").classList.remove("ok");
+    } else {
+        document.getElementById("infobox").classList.remove("error");
+        document.getElementById("infobox").classList.add("ok");
+    }
+
     document.getElementById("infobox").classList.remove("show");
     await sleep(1);
     document.getElementById("infobox").classList.add("show");

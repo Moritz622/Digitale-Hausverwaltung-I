@@ -5,6 +5,7 @@ import dev.hausfix.enumerators.EKindOfMeter;
 import dev.hausfix.interfaces.ICustomer;
 import dev.hausfix.interfaces.IID;
 import dev.hausfix.interfaces.IReading;
+import dev.hausfix.interfaces.IUser;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -13,6 +14,7 @@ public class Reading extends Entity implements IReading {
 
     private String comment;
     private ICustomer customer;
+    private IUser user;
     private LocalDate dateOfReading;
     private EKindOfMeter kindOfMeter;
     private double meterCount;
@@ -73,6 +75,11 @@ public class Reading extends Entity implements IReading {
     }
 
     @Override
+    public void setUser(IUser user) {
+        this.user = user;
+    }
+
+    @Override
     public String getComment() {
         return comment;
     }
@@ -105,6 +112,10 @@ public class Reading extends Entity implements IReading {
     @Override
     public boolean getSubstitute() {
         return substitute;
+    }
+    @Override
+    public IUser getUser() {
+        return user;
     }
 
     @Override

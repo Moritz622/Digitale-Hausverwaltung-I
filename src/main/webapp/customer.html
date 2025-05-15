@@ -46,6 +46,8 @@
         </div>
         <div class="data">
             <div class="inputContainer">
+                <h1>Basisdaten</h1>
+
                 <label>Vorname</label>
                 <input type="text" id="firstname" placeholder="" onchange="updateMissingData(this)" />
                 <label>Nachname</label>
@@ -61,7 +63,34 @@
                 </select>
             </div>
 
-            <div class="chart" id="curve_chart"></div>
+            <div class="chartContainer inputContainer">
+                <h1>Auswertung</h1>
+
+                <div style="display: flex; flex-direction: row;justify-content: space-around; ">
+                    <div style="display: flex; flex-direction: column">
+                        <label>Von Datum</label>
+                        <input type="date" id="chartDateFrom" onchange="loadChart()" />
+                    </div>
+
+                    <div style="display: flex; flex-direction: column">
+                        <label>Bis Datum</label>
+                        <input type="date" id="chartDateTo" onchange="loadChart()" />
+                    </div>
+
+                    <div style="display: flex; flex-direction: column">
+                        <label>Typ</label>
+                        <select id="chartType" onchange="loadChart()">
+                            <option value="">Alle</option>
+                            <option value="HEIZUNG">Heizung</option>
+                            <option value="WASSER">Wasser</option>
+                            <option value="STROM">Strom</option>
+                            <option value="UNBEKANNT">Unbekannt</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="chart" id="curve_chart"></div>
+            </div>
         </div>
     </div>
     <div class="infobox" id="infobox">

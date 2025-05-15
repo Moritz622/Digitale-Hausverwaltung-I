@@ -33,7 +33,10 @@
     </div>
 
     <div class="page">
-        <a class="button addButton" href="customer.html"><i class="fa-solid fa-plus"></i></a>
+        <div class="pageHeader">
+            <input type="text" placeholder="Search..." id="searchInput" onkeyup="searchCustomers()"/>
+            <a class="button addButton" href="customer.html"><i class="fa-solid fa-plus"></i></a>
+        </div>
 
         <table class="table" id="customerTable">
             <tr>

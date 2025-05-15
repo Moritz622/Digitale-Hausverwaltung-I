@@ -8,7 +8,7 @@
         "reading": {
             "type": "object",
             "required": [
-                "customer",
+                "id",
                 "dateOfReading",
                 "meterId",
                 "substitute",

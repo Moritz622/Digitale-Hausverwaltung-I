@@ -27,7 +27,10 @@ public class ReadingJSONMapper {
 
         JSONObject readingJson = new JSONObject();
         readingJson.put("id", reading.getId().toString());
-        readingJson.put("customer", SchemaLoader.load(customerJSONMapper.mapCustomer((Customer) reading.getCustomer()), "schema/CustomerJsonSchema.json").get("customer"));
+
+        if(reading.getCustomer() != null){
+            readingJson.put("customer", SchemaLoader.load(customerJSONMapper.mapCustomer((Customer) reading.getCustomer()), "schema/CustomerJsonSchema.json").get("customer"));
+        }
         readingJson.put("dateOfReading", reading.getDateOfReading().toString());
         readingJson.put("kindOfMeter", reading.getKindOfMeter().toString());
         readingJson.put("meterCount", reading.getMeterCount());
@@ -51,7 +54,7 @@ public class ReadingJSONMapper {
         try {
             reading.setCustomer(customerService.getCustomer(UUID.fromString(json.getJSONObject("customer").get("id").toString())));
         } catch (NoEntityFoundException e) {
-            throw new RuntimeException(e);
+
         }
 
         reading.setDateOfReading(LocalDate.parse(json.get("dateOfReading").toString()));

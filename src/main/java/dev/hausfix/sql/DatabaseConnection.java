@@ -49,7 +49,7 @@ public class DatabaseConnection implements IDatabaseConnection {
         public void createAllTables() {
                 try {
                         connection.prepareStatement("CREATE TABLE customers (id UUID PRIMARY KEY,lastname VARCHAR(100),firstname VARCHAR(100),email VARCHAR(100),password VARCHAR(100),userid VarCHAR(256),birthdate DATE,gender ENUM ('D','M','U','W'));").executeQuery();
-                        connection.prepareStatement("CREATE TABLE readings(id UUID PRIMARY KEY,comment VARCHAR(9999),customerId VARCHAR(256),dateOfReading DATE,kindOfMeter ENUM('Heizung','Strom','Wasser','Unbekannt'),meterCount DOUBLE,meterId VARCHAR(256),substitute BOOLEAN)").executeQuery();
+                        connection.prepareStatement("CREATE TABLE readings(id UUID PRIMARY KEY,comment VARCHAR(9999),customerId VARCHAR(256),userid VarCHAR(256),dateOfReading DATE,kindOfMeter ENUM('Heizung','Strom','Wasser','Unbekannt'),meterCount DOUBLE,meterId VARCHAR(256),substitute BOOLEAN)").executeQuery();
                         connection.prepareStatement("CREATE TABLE users (id UUID PRIMARY KEY,username VARCHAR(100),email VARCHAR(100),password VARCHAR(100));").executeQuery();
                 } catch (SQLException e) {
                         System.out.println("Fehler bei der erstellung der Tabellen");
@@ -74,7 +74,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                         connection.prepareStatement("DROP TABLE readings").executeQuery();
                         connection.prepareStatement("DROP TABLE users").executeQuery();
                 } catch (SQLException e) {
-                        System.out.println("Fehler bei der löschung der Tabellen");
+                        System.out.println("Fehler bei der löschung der Tabellen" + e.getMessage());
                 }
         }
 
