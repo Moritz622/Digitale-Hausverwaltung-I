@@ -152,5 +152,5 @@ des Projekts</strong>
 <ul>
 <li>Marco</li>
 <li>Moritz</li>
-<li>Nian</li>
+<li>Nina</li>
 
