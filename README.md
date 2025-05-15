@@ -32,6 +32,8 @@ Das Projekt gliedert sich in zwei Sprints:
 <ul>
 <li>Entwicklung einer REST-API mit <strong>Jersey</strong>, basierend auf den CRUD-Operationen.</li>
 </ul>
+<li><strong>Sprint 3: Frontend fur die digitale Hausverwaltung und Abschluss
+des Projekts</strong>
 </li>
 </ul>
 
@@ -150,5 +152,5 @@ Das Projekt gliedert sich in zwei Sprints:
 <ul>
 <li>Marco</li>
 <li>Moritz</li>
-<li>Nian</li>
+<li>Nina</li>
 
