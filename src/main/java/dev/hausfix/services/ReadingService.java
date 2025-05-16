@@ -141,6 +141,10 @@ public class ReadingService extends Service implements IReadingService {
             String id = reading.getId().toString();
             String user = "";
 
+            if(reading.getSubstitute()){
+                substitute = 1;
+            }
+
             if(reading.getUser() != null) {
                 user = ((User) reading.getUser()).getId().toString();
             }

@@ -264,6 +264,8 @@ public class ReadingPageResource {
 
         Reading reading = readingJSONMapper.mapReading(data.getJSONObject("reading"));
 
+        System.out.println(reading.getSubstitute());
+
         try {
             Reading temp = readingService.getReading(reading.getId());
 

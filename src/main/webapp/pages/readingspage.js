@@ -1,6 +1,4 @@
 async function loadReadingspage() {
-    document.getElementById("customeridFilter").innerHTML = "";
-
     for (let c of (await getAllCustomers())) {
         let option = document.createElement("option")
         option.value = c.id;

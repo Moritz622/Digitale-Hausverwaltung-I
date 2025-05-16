@@ -17,6 +17,8 @@ async function saveReading() {
     var customerbirthdate = document.getElementById("birthdate").value;
     var customergender = document.getElementById("gender").value;
 
+    console.log("nwort" + substitute);
+
     var validRequest = true;
 
     if (metercount == "") {
