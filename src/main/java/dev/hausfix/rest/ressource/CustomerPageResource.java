@@ -20,13 +20,20 @@ import dev.hausfix.util.PropertyLoader;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.XML;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.UUID;
 
 @Path("rest/customerpage")
@@ -368,4 +375,424 @@ public class CustomerPageResource {
         }
     }
 
+    @POST
+    @Path("export/json")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response exportCustomersAsJSON(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if (sessionUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        ReadingService readingService = new ReadingService(dbConnection);
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
+        ArrayList<Customer> customers = customerService.getAllCustomers();
+
+        ArrayList<Customer> userCustomers = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            if (customer.getUser() != null) {
+                if (((User) customer.getUser()).getId().toString().matches(sessionUser.getId().toString())) {
+                    userCustomers.add(customer);
+                }
+            }
+        }
+
+        JSONObject main = new JSONObject();
+
+        JSONArray customerJSON = new JSONArray();
+
+        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+        for(Customer customer : userCustomers){
+            customerJSON.put(SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").get("customer"));
+        }
+
+        main.put("customers", customerJSON);
+
+        byte[] jsonBytes = main.toString(4).getBytes(StandardCharsets.UTF_8); // 4 = pretty print
+
+        return Response.ok(jsonBytes)
+                .type("application/json; charset=UTF-8")
+                .header("Content-Disposition", "attachment; filename=\"export.json\"")
+                .build();
+    }
+
+    @POST
+    @Path("export/xml")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response exportCustomersAsXML(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if (sessionUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        ReadingService readingService = new ReadingService(dbConnection);
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
+        ArrayList<Customer> customers = customerService.getAllCustomers();
+
+        ArrayList<Customer> userCustomers = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            if (customer.getUser() != null) {
+                if (((User) customer.getUser()).getId().toString().matches(sessionUser.getId().toString())) {
+                    userCustomers.add(customer);
+                }
+            }
+        }
+
+        JSONObject main = new JSONObject();
+
+        JSONArray customerJSON = new JSONArray();
+
+        CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+        for(Customer customer : userCustomers){
+            customerJSON.put(SchemaLoader.load(customerJSONMapper.mapCustomer(customer), "schema/CustomerJsonSchema.json").get("customer"));
+        }
+
+        main.put("customer", customerJSON);
+
+        String xml = "<customers>" + XML.toString(main) + "</customers>";
+
+        byte[] jsonBytes = xml.getBytes(StandardCharsets.UTF_8); // 4 = pretty print
+
+        return Response.ok(jsonBytes)
+                .type("application/xml; charset=UTF-8")
+                .header("Content-Disposition", "attachment; filename=\"export.xml\"")
+                .build();
+    }
+
+    @POST
+    @Path("export/csv")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response exportCustomersAsCSV(String jsonString) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        JSONObject data = new JSONObject(jsonString);
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if (sessionUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        ReadingService readingService = new ReadingService(dbConnection);
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
+        ArrayList<Customer> customers = customerService.getAllCustomers();
+
+        ArrayList<Customer> userCustomers = new ArrayList<>();
+
+        for(Customer customer : customers){
+            if(customer.getUser() != null){
+                if(((User) customer.getUser()).getId().toString().matches(sessionUser.getId().toString())){
+                    userCustomers.add(customer);
+                }
+            }
+        }
+
+        File file = null;
+
+        try {
+            file = File.createTempFile("customers", ".csv");
+
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
+
+            pw.println("Nachname,Vorname,Geburtsdatum,Geschlecht");
+
+            for(Customer userCustomer : userCustomers){
+                pw.println(userCustomer.getLastName() + "," + userCustomer.getFirstName() + "," + userCustomer.getBirthDate() + "," + userCustomer.getGender());
+            }
+
+            pw.flush();
+            pw.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Response.ok(file, MediaType.valueOf("text/csv; charset=UTF-8"))
+                .header("Content-Disposition", "attachment; filename=\"export.csv\"")
+                .build();
+    }
+
+    @POST
+    @Path("importreadings")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importReadings(
+            @FormDataParam("token") String tokenJson,
+            @FormDataParam("file") InputStream uploadedInputStream,
+            @FormDataParam("file") FormDataContentDisposition fileDetail,
+            @FormDataParam("file") FormDataBodyPart bodyPart) {
+
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        dbConnection.openConnection(new PropertyLoader().getProperties("src/main/resources/hausfix.properties"));
+
+        System.out.println("test " + tokenJson);
+
+        JSONObject data = new JSONObject(tokenJson);
+
+        System.out.println("data " + data.toString());
+
+        User sessionUser = checkSession(data, dbConnection);
+
+        if (sessionUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your session has expired").build();
+        }
+
+        ReadingService readingService = new ReadingService(dbConnection);
+
+        CustomerService customerService = new CustomerService(dbConnection);
+
+        readingService.setCustomerService(customerService);
+        customerService.setReadingService(readingService);
+
+
+        String fileName = fileDetail.getFileName();
+        String mimeType = bodyPart.getMediaType().toString();
+
+        System.out.println("Dateiname: " + fileName);
+        System.out.println("MIME-Typ: " + mimeType);
+
+        if(mimeType.matches("application/json")){
+            try {
+                File file = saveInputStreamToTempFile(uploadedInputStream, fileName);
+
+                Scanner scan = new Scanner(file);
+
+                String jsonString = "";
+
+                while(scan.hasNextLine()){
+                    jsonString += scan.nextLine();
+                }
+
+                System.out.println("try json string");
+
+                JSONObject jsonObject = new JSONObject(jsonString);
+
+                System.out.println(jsonString);
+
+                JSONArray jsonArray = jsonObject.getJSONArray("customers");
+
+                System.out.println("test1");
+
+                CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+                for(int i=0;i<jsonArray.length();i++){
+                    JSONObject temp = jsonArray.getJSONObject(i);
+
+                    System.out.println("test2 " + temp.toString());
+
+                    Customer r = customerJSONMapper.mapCustomer(temp);
+
+                    System.out.println("test3");
+
+                    r.setUser(sessionUser);
+                    r.setId(UUID.randomUUID());
+
+                    customerService.addCustomer(r);
+
+                    System.out.println("test4");
+                }
+            } catch (IOException e) {
+                System.out.println("io " + e.getMessage());
+
+                throw new RuntimeException(e);
+            } catch (IncompleteDatasetException e) {
+                System.out.println("incomplete " + e.getMessage());
+
+                throw new RuntimeException(e);
+            } catch (DuplicateEntryException e) {
+                System.out.println("duplicate " + e.getMessage());
+
+                throw new RuntimeException(e);
+            }
+        }else if(mimeType.matches("text/xml")){
+            try {
+                File file = saveInputStreamToTempFile(uploadedInputStream, fileName);
+
+                Scanner scan = new Scanner(file);
+
+                String xmlString = "";
+
+                while(scan.hasNextLine()){
+                    xmlString += scan.nextLine();
+                }
+
+                JSONObject jsonObject = XML.toJSONObject(xmlString);
+
+
+                JSONObject customers = jsonObject.getJSONObject("customers");
+
+                Object readingObj = customers.get("customer");
+
+                JSONArray customerArray;
+
+                if (readingObj instanceof JSONArray) {
+                    customerArray = (JSONArray) readingObj;
+                } else {
+                    customerArray = new JSONArray();
+                    customerArray.put(readingObj);
+                }
+
+                System.out.println(jsonObject.toString());
+
+                JSONArray jsonArray = customerArray;
+
+                System.out.println("test1");
+
+                CustomerJSONMapper customerJSONMapper = new CustomerJSONMapper();
+
+                for(int i=0;i<jsonArray.length();i++){
+                    JSONObject temp = jsonArray.getJSONObject(i);
+
+                    System.out.println("test2 " + temp.toString());
+
+                    Customer r = customerJSONMapper.mapCustomer(temp);
+
+                    System.out.println("test3");
+
+                    r.setUser(sessionUser);
+                    r.setId(UUID.randomUUID());
+
+                    customerService.addCustomer(r);
+
+                    System.out.println("test4");
+                }
+            } catch (IOException e) {
+                System.out.println("io " + e.getMessage());
+
+                throw new RuntimeException(e);
+            } catch (IncompleteDatasetException e) {
+                System.out.println("incomplete " + e.getMessage());
+
+                throw new RuntimeException(e);
+            }catch (DuplicateEntryException e) {
+                System.out.println("duplicate " + e.getMessage());
+
+                throw new RuntimeException(e);
+            }
+        }else if(mimeType.matches("text/csv")){
+            try {
+                File file = saveInputStreamToTempFile(uploadedInputStream, fileName);
+
+                Scanner scan = new Scanner(file);
+
+                ArrayList<Reading> importReadingsList = new ArrayList<Reading>();
+
+                scan.nextLine();
+
+                //Wert,Typ,Datum,Kommentar,Substitute,MessgerätID,Kunde Vorname,Kunde Nachname
+
+                ArrayList<Customer> customers = customerService.getAllCustomers();
+                ArrayList<Customer> userCustomers = new ArrayList<Customer>();
+
+                for(Customer c : customers){
+                    if(((User)c.getUser()).getId() == sessionUser.getId()){
+                        userCustomers.add(c);
+                    }
+                }
+
+                while(scan.hasNextLine()) {
+                    String[] readingData = scan.nextLine().split(",");
+
+                    Reading tempReading = new Reading();
+                    tempReading.setMeterCount(Double.parseDouble(readingData[0]));
+                    tempReading.setKindOfMeter(EKindOfMeter.valueOf(readingData[1]));
+                    tempReading.setDateOfReading(LocalDate.parse(readingData[2]));
+                    tempReading.setComment(readingData[3]);
+                    tempReading.setSubstitute(Boolean.parseBoolean(readingData[4]));
+                    tempReading.setMeterId(readingData[5]);
+
+                    String vorname = readingData[6];
+                    String nachname = readingData[7];
+
+                    Customer huan = null;
+
+                    for (Customer c : userCustomers) {
+                        if (c.getFirstName().matches(vorname) & c.getLastName().matches(nachname)) {
+                            huan = c;
+
+                            break;
+                        }
+                    }
+
+                    if(huan != null){
+                        tempReading.setCustomer(huan);
+                    }else{
+                        tempReading.setCustomer(null);
+                    }
+
+                    readingService.addReading(tempReading);
+
+                    System.out.println("kek");
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (IncompleteDatasetException e) {
+                throw new RuntimeException(e);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (DuplicateEntryException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return Response.ok("Upload erfolgreich").build();
+    }
+
+    public File saveInputStreamToTempFile(InputStream inputStream, String originalFileName) throws IOException {
+        // Extract file extension (optional, for correct temp file naming)
+        String fileSuffix = "";
+        int i = originalFileName.lastIndexOf('.');
+        if (i > 0) {
+            fileSuffix = originalFileName.substring(i);
+        }
+
+        // Create temp file
+        File tempFile = File.createTempFile("upload_", fileSuffix);
+        tempFile.deleteOnExit(); // Optional: auto-delete on JVM exit
+
+        // Write InputStream to File
+        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return tempFile;
+    }
 }
