@@ -1,4 +1,6 @@
 async function loadReadingspage() {
+    document.getElementById("customeridFilter").innerHTML = "";
+
     for (let c of (await getAllCustomers())) {
         let option = document.createElement("option")
         option.value = c.id;
@@ -7,6 +9,10 @@ async function loadReadingspage() {
     }
 
     var count = 0;
+
+    for (var i = 1; i < document.getElementById("readingTable").childElementCount; i++) {
+        document.getElementById("readingTable").children[i].remove()
+    }
 
     for (let r of (await getAllReadings())) {
         count++;
@@ -294,4 +300,6 @@ async function importReadings() {
     });
 
     const result = await response.text();
+
+    location.reload();
 }

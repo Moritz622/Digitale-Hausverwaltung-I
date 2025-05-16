@@ -22,6 +22,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.checkerframework.checker.units.qual.A;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -525,6 +526,7 @@ public class ReadingPageResource {
                     System.out.println("test3");
 
                     r.setUser(sessionUser);
+                    r.setId(UUID.randomUUID());
 
                     readingService.addReading(r);
 
@@ -561,9 +563,23 @@ public class ReadingPageResource {
 
                 JSONObject jsonObject = XML.toJSONObject(xmlString);
 
+
+                JSONObject readings = jsonObject.getJSONObject("readings");
+
+                Object readingObj = readings.get("reading");
+
+                JSONArray readingArray;
+
+                if (readingObj instanceof JSONArray) {
+                    readingArray = (JSONArray) readingObj;
+                } else {
+                    readingArray = new JSONArray();
+                    readingArray.put(readingObj);
+                }
+
                 System.out.println(jsonObject.toString());
 
-                JSONArray jsonArray = jsonObject.getJSONArray("readings");
+                JSONArray jsonArray = readingArray;
 
                 System.out.println("test1");
 
@@ -579,6 +595,7 @@ public class ReadingPageResource {
                     System.out.println("test3");
 
                     r.setUser(sessionUser);
+                    r.setId(UUID.randomUUID());
 
                     readingService.addReading(r);
 
@@ -599,6 +616,72 @@ public class ReadingPageResource {
             } catch (DuplicateEntryException e) {
                 System.out.println("duplicate " + e.getMessage());
 
+                throw new RuntimeException(e);
+            }
+        }else if(mimeType.matches("text/csv")){
+            try {
+                File file = saveInputStreamToTempFile(uploadedInputStream, fileName);
+
+                Scanner scan = new Scanner(file);
+
+                ArrayList<Reading> importReadingsList = new ArrayList<Reading>();
+
+                scan.nextLine();
+
+                //Wert,Typ,Datum,Kommentar,Substitute,MessgerätID,Kunde Vorname,Kunde Nachname
+
+                ArrayList<Customer> customers = customerService.getAllCustomers();
+                ArrayList<Customer> userCustomers = new ArrayList<Customer>();
+
+                for(Customer c : customers){
+                    if(((User)c.getUser()).getId() == sessionUser.getId()){
+                        userCustomers.add(c);
+                    }
+                }
+
+                while(scan.hasNextLine()) {
+                    String[] readingData = scan.nextLine().split(",");
+
+                    Reading tempReading = new Reading();
+                    tempReading.setMeterCount(Double.parseDouble(readingData[0]));
+                    tempReading.setKindOfMeter(EKindOfMeter.valueOf(readingData[1]));
+                    tempReading.setDateOfReading(LocalDate.parse(readingData[2]));
+                    tempReading.setComment(readingData[3]);
+                    tempReading.setSubstitute(Boolean.parseBoolean(readingData[4]));
+                    tempReading.setMeterId(readingData[5]);
+
+                    String vorname = readingData[6];
+                    String nachname = readingData[7];
+
+                    Customer huan = null;
+
+                    for (Customer c : userCustomers) {
+                        if (c.getFirstName().matches(vorname) & c.getLastName().matches(nachname)) {
+                            huan = c;
+
+                            break;
+                        }
+                    }
+
+                    if(huan != null){
+                        tempReading.setCustomer(huan);
+                    }else{
+                        tempReading.setCustomer(null);
+                    }
+
+                    readingService.addReading(tempReading);
+
+                    System.out.println("kek");
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (IncompleteDatasetException e) {
+                throw new RuntimeException(e);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (DuplicateEntryException e) {
                 throw new RuntimeException(e);
             }
         }
