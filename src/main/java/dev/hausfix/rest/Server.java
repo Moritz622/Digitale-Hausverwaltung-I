@@ -2,6 +2,7 @@ package dev.hausfix.rest;
 
 import com.sun.net.httpserver.HttpServer;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.File;
@@ -19,7 +20,8 @@ public class Server {
         ResourceConfig rc = new ResourceConfig()
                 .packages(pack)
                 .register(dev.hausfix.rest.CORSFilter.class)
-                .register(StaticResourceHandler.class);
+                .register(StaticResourceHandler.class)
+                .register(MultiPartFeature.class);
 
         server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
     }

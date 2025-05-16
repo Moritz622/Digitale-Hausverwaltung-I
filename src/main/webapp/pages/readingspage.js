@@ -174,8 +174,6 @@ function searchReadings() {
         rows[i].style.display = "";
         count++;
     }
-
-    document.getElementById("entryCount").innerHTML = count;
 }
 
 async function exportCSV() {
@@ -199,7 +197,7 @@ async function exportCSV() {
 
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'export.csv'; // Der Dateiname
+            a.download = 'readings.csv'; // Der Dateiname
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -232,7 +230,7 @@ async function exportJSON() {
 
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'export.json';
+            a.download = 'readings.json';
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -242,4 +240,58 @@ async function exportJSON() {
         .catch(error => {
             console.error('Fehler:', error);
         });
+}
+
+async function exportXML() {
+    return await fetch("http://localhost:8069/rest/readingpage/export/xml", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem("token"),
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Fehler beim Herunterladen');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'readings.xml';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Fehler:', error);
+        });
+}
+
+async function importReadings() {
+    const fileInput = document.getElementById("importFileUpload");
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("Please select a file first.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("token", JSON.stringify({ "token": localStorage.getItem("token") }));
+
+    const response = await fetch("http://localhost:8069/rest/readingpage/importreadings", {
+        method: "POST",
+        body: formData // No need to set headers — browser handles multipart automatically
+    });
+
+    const result = await response.text();
 }

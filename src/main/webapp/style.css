@@ -447,7 +447,6 @@ background {
     left: 17%;
     height: 10%;
     width: fit-content;
-    font-size: 4em;
     margin-left: 20px;
     background: #4776E6; /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, #8E54E9, #4776E6); /* Chrome 10-25, Safari 5.1-6 */
@@ -455,7 +454,7 @@ background {
 
     color: transparent;
     background-clip: text;
-    min-height: 5em;
+    font-size: 9cqh;
     user-select: none;
 }
 
